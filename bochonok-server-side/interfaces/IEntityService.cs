@@ -3,6 +3,6 @@
 public interface IEntityService<TEntity>
 {
     Task<List<TEntity>> GetAll();
-    Task<TEntity> Add(TEntity entity);
+    Task<TEntity> Add<TEntityDTO>(TEntityDTO entity);
     Task<TEntity> GetById(Guid id);
 }

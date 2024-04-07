@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace bochonok_server_side.features.Categories;
+namespace bochonok_server_side.model;
 
 [PrimaryKey(nameof(id))]
-public class CategoryDTO
+public class CatalogItem
 {
     private Guid id { get; set; } = Guid.NewGuid();
     public string title { get; set; } = string.Empty;

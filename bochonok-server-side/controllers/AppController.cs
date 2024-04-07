@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace bochonok_server_side.controllers;
 
-public abstract class AppController<TEntity>: ControllerBase where TEntity: class
+public abstract class AppController<TEntity,TEntityDTO>: ControllerBase where TEntity: class where TEntityDTO: class
 {
     protected readonly IEntityService<TEntity> _service;
     
@@ -14,7 +14,7 @@ public abstract class AppController<TEntity>: ControllerBase where TEntity: clas
     }
     
     [HttpPost]
-    public virtual async Task<ActionResult<List<TEntity>>> Add(TEntity entity)
+    public virtual async Task<ActionResult<List<TEntity>>> Add(TEntityDTO entity)
     {
         return Ok(await _service.Add(entity));
     }

@@ -18,12 +18,14 @@ public class EntityService<TEntity>: IEntityService<TEntity> where TEntity: clas
         return await GetDBSet().ToListAsync();
     }
 
-    public async Task<TEntity> Add(TEntity entity)
+    public async Task<TEntity> Add<TEntityDTO>(TEntityDTO entity)
     {
-        GetDBSet().Add(entity);
+        var castedEntity = entity as TEntity;
+        
+        GetDBSet().Add(castedEntity);
         await _context.SaveChangesAsync();
 
-        return entity;
+        return castedEntity;
     }
 
     public async Task<TEntity> GetById(Guid id)
