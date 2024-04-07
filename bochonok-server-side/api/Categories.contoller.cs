@@ -1,9 +1,9 @@
-﻿using bochonok_server_side.controllers;
+﻿using bochonok_server_side.api.AppController;
 using bochonok_server_side.interfaces;
 using bochonok_server_side.model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bochonok_server_side.features.Categories;
+namespace bochonok_server_side.api;
 
 [ApiController]
 [Route("[controller]")]

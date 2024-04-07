@@ -1,8 +1,7 @@
 ﻿using bochonok_server_side.interfaces;
-using bochonok_server_side.services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bochonok_server_side.controllers;
+namespace bochonok_server_side.api.AppController;
 
 public abstract class AppController<TEntity,TEntityDTO>: ControllerBase where TEntity: class where TEntityDTO: class
 {

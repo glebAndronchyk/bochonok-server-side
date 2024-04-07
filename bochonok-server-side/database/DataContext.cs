@@ -1,5 +1,4 @@
-﻿using bochonok_server_side.features.Categories;
-using bochonok_server_side.model;
+﻿using bochonok_server_side.model;
 using Microsoft.EntityFrameworkCore;
 
 namespace bochonok_server_side.database;

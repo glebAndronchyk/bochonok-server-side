@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace bochonok_server_side.features.QRCode;
+namespace bochonok_server_side.api;
 
 [ApiController]
 [Route("[controller]")]
