@@ -1,12 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using bochonok_server_side.model.abstractions;
 
 namespace bochonok_server_side.model;
 
-[PrimaryKey(nameof(id))]
-public class CatalogItem
+public class CatalogItem : DescribedItem
 {
-    private Guid id { get; set; } = Guid.NewGuid();
-    public string title { get; set; } = string.Empty;
-    public string description { get; set; } = string.Empty;
-    public string image { get; set; } = string.Empty;
 }

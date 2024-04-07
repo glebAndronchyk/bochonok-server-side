@@ -1,13 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace bochonok_server_side.Model.Image;
 
 public class ImageBase
 {
     protected readonly byte[] ByteArray;
-    protected readonly SixLabors.ImageSharp.Image<Rgba32> Img; 
+    protected readonly Image<Rgba32> Img; 
     
     public ImageBase(string src)
     {
