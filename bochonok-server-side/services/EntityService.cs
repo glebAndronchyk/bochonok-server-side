@@ -15,12 +15,12 @@ public class EntityService<TEntity>: IEntityService<TEntity> where TEntity: clas
 
     public async Task<List<TEntity>> GetAll()
     {
-        return await _context.Set<TEntity>().ToListAsync();
+        return await GetDBSet().ToListAsync();
     }
 
     public async Task<TEntity> Add(TEntity entity)
     {
-        _context.Set<TEntity>().Add(entity);
+        GetDBSet().Add(entity);
         await _context.SaveChangesAsync();
 
         return entity;
@@ -28,7 +28,7 @@ public class EntityService<TEntity>: IEntityService<TEntity> where TEntity: clas
 
     public async Task<TEntity> GetById(Guid id)
     {
-        TEntity? entity = await _context.Set<TEntity>().FindAsync(id);
+        TEntity? entity = await GetDBSet().FindAsync(id);
 
         if (entity != null)
         {
@@ -36,5 +36,10 @@ public class EntityService<TEntity>: IEntityService<TEntity> where TEntity: clas
         }
 
         throw new KeyNotFoundException($"No entity with id:{id} found.");
+    }
+
+    private DbSet<TEntity> GetDBSet()
+    {
+        return _context.Set<TEntity>();
     }
 }
