@@ -12,4 +12,30 @@ public abstract class AppController<TEntity>: ControllerBase where TEntity: clas
     {
         _service = service;
     }
+    
+    [HttpPost]
+    public virtual async Task<ActionResult<List<TEntity>>> Add(TEntity entity)
+    {
+        return Ok(await _service.Add(entity));
+    }
+
+    [HttpGet]
+    public virtual async Task<ActionResult<List<TEntity>>> GetAll()
+    {
+        return Ok(await _service.GetAll());
+    }
+
+    [HttpGet("{id}")]
+    public virtual async Task<ActionResult<TEntity>> GetById(Guid id)
+    {
+        try
+        {
+            return Ok(await _service.GetById(id));
+        }
+        catch (Exception e)
+        {
+            BadRequest(e);
+            throw;
+        }
+    }
 }
