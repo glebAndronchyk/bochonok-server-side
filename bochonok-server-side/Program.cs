@@ -1,4 +1,7 @@
 using bochonok_server_side.database;
+using bochonok_server_side.features.Categories;
+using bochonok_server_side.interfaces;
+using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
 
 var app = builder.Build();
 
