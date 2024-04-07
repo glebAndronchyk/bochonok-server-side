@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
+builder.Services.AddScoped<IEntityService<CategoryDTO>, EntityService<CategoryDTO>>();
 
 var app = builder.Build();
 

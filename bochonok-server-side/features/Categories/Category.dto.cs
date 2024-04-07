@@ -3,7 +3,7 @@
 namespace bochonok_server_side.features.Categories;
 
 [PrimaryKey(nameof(id))]
-public class Category
+public class CategoryDTO
 {
     private Guid id { get; set; } = Guid.NewGuid();
     public string title { get; set; } = string.Empty;

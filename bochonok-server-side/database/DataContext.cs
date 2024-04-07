@@ -8,5 +8,5 @@ public class DataContext: DbContext
     public DataContext(DbContextOptions<DataContext> options): base(options)
     { }
 
-    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<CategoryDTO> Categories => Set<CategoryDTO>();
 }
