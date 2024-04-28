@@ -9,20 +9,19 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.17" />
+        <PackageReference Include="MySqlConnector" Version="2.3.6" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.2" />
         <PackageReference Include="SixLabors.ImageSharp.Web" Version="3.1.1" />
+        <PackageReference Include="SQLite" Version="3.13.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="database\" />
-      <Folder Include="features\Catalog\" />
-      <Folder Include="features\ProductsList\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="features\QRCode\QRCode.cs" />
     </ItemGroup>
 
 </Project>
