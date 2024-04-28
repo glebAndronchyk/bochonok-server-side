@@ -2,6 +2,6 @@
 
 namespace bochonok_server_side.model;
 
-public class CatalogItem : DescribedItem
+public class CatalogItem
 {
 }
