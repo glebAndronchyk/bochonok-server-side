@@ -1,8 +1,11 @@
 using bochonok_server_side.database;
 using bochonok_server_side.interfaces;
 using bochonok_server_side.model;
+using bochonok_server_side.Model.Image;
 using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.PixelFormats;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +40,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var test = new QRFinderPattern().GetRgba32Bytes();
+
+// foreach (var rgba32 in test)
+// {
+//     Console.WriteLine(rgba32.ToString());
+// }
+
+using (var image = Image.LoadPixelData<Rgba32>(test, (int)Math.Sqrt(test.Length), (int)Math.Sqrt(test.Length)))
+{
+   image.Save("test600.jpg", new JpegEncoder());
+}
+// File.WriteAllBytes("test600.png", test);
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -46,3 +62,4 @@ app.UseCors("_allowed");
 app.MapControllers();
 
 app.Run();
+

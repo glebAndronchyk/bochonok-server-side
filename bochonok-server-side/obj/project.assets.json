@@ -59,6 +59,19 @@
           }
         }
       },
+      "MathNet.Numerics/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.AspNetCore.OpenApi/7.0.0": {
         "type": "package",
         "dependencies": {
@@ -1549,6 +1562,28 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "MathNet.Numerics/5.0.0": {
+      "sha512": "pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
+      "type": "package",
+      "path": "mathnet.numerics/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net461/MathNet.Numerics.dll",
+        "lib/net461/MathNet.Numerics.xml",
+        "lib/net48/MathNet.Numerics.dll",
+        "lib/net48/MathNet.Numerics.xml",
+        "lib/net5.0/MathNet.Numerics.dll",
+        "lib/net5.0/MathNet.Numerics.xml",
+        "lib/net6.0/MathNet.Numerics.dll",
+        "lib/net6.0/MathNet.Numerics.xml",
+        "lib/netstandard2.0/MathNet.Numerics.dll",
+        "lib/netstandard2.0/MathNet.Numerics.xml",
+        "mathnet.numerics.5.0.0.nupkg.sha512",
+        "mathnet.numerics.nuspec"
       ]
     },
     "Microsoft.AspNetCore.OpenApi/7.0.0": {
@@ -3954,6 +3989,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "MathNet.Numerics >= 5.0.0",
       "Microsoft.AspNetCore.OpenApi >= 7.0.0",
       "Microsoft.EntityFrameworkCore.Analyzers >= 7.0.17",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.17",
@@ -3968,32 +4004,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\cryac\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "/Users/gandronchyk/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\univ\\y2\\2s\\bochonok-server-side\\bochonok-server-side\\bochonok-server-side.csproj",
+      "projectUniqueName": "/Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/bochonok-server-side.csproj",
       "projectName": "bochonok-server-side",
-      "projectPath": "D:\\univ\\y2\\2s\\bochonok-server-side\\bochonok-server-side\\bochonok-server-side.csproj",
-      "packagesPath": "C:\\Users\\cryac\\.nuget\\packages\\",
-      "outputPath": "D:\\univ\\y2\\2s\\bochonok-server-side\\bochonok-server-side\\obj\\",
+      "projectPath": "/Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/bochonok-server-side.csproj",
+      "packagesPath": "/Users/gandronchyk/.nuget/packages/",
+      "outputPath": "/Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\cryac\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/gandronchyk/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
+        "/Users/gandronchyk/.dotnet/sdk/7.0.306/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4012,6 +4041,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "MathNet.Numerics": {
+            "target": "Package",
+            "version": "[5.0.0, )"
+          },
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[7.0.0, )"
@@ -4078,7 +4111,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/Users/gandronchyk/.dotnet/sdk/7.0.306/RuntimeIdentifierGraph.json"
       }
     }
   }

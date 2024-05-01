@@ -1,4 +1,6 @@
-﻿namespace bochonok_server_side.Model.Image;
+﻿using bochonok_server_side.Model.Image.abstractions;
+
+namespace bochonok_server_side.Model.Image;
 
 public class QRCode
 {
@@ -15,6 +17,8 @@ public class QRCode
 
     public ImageBase Encode()
     {
+        // var a = new QRFinderPattern()
+        
         return new ImageBase(new byte[10]);
     }
 

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.17" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.17">
@@ -22,6 +23,12 @@
         <PackageReference Include="SixLabors.ImageSharp.Web" Version="3.1.1" />
         <PackageReference Include="SQLite" Version="3.13.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+
+
     </ItemGroup>
+
+
+
+
 
 </Project>
