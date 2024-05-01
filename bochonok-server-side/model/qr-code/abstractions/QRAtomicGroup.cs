@@ -1,5 +1,4 @@
 using bochonok_server_side.model;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace bochonok_server_side.Model.Image.abstractions;
 
@@ -7,18 +6,15 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
 {
   protected List<List<T>> _items;
 
-  public QRAtomicGroup(List<List<T>> items, Tuple<int, int>? size) : base(size)
+  public QRAtomicGroup(List<List<T>> items, QRSize qrSize) : base(qrSize)
   {
     SetItems(items);
   }
   
-  public QRAtomicGroup(Tuple<int, int>? size, int multiplier) : base(size, multiplier)
+  public QRAtomicGroup(QRSize qrSize) : base(qrSize)
   {
     _items = new List<List<T>>();
   }
-
-  public void OverrideItem(T item)
-  { }
 
   public void SetItems(List<List<T>> items)
   {
@@ -30,7 +26,7 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
   // Rework this
   public ByteMatrix Flatten()
   {
-    var result = new ByteMatrix(Size.Item1, Size.Item2);
+    var result = new ByteMatrix(Size.Width, Size.Height);
 
     int currentX = 0;
     int currentY = 0;
@@ -50,20 +46,20 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
           itemBytes = item.GetMatrix();
         }
 
-        for (int i = 0; i < item.Size.Item1; i++)
+        for (int i = 0; i < item.Size.Width; i++)
         {
-          for (int j = 0; j < item.Size.Item2; j++)
+          for (int j = 0; j < item.Size.Height; j++)
           {
             result.Set(currentX + i, currentY + j, itemBytes.At(i, j));
           }
         }
 
         // Update the current position
-        currentY += item.Size.Item2;
+        currentY += item.Size.Width;
       }
 
       // Update the current position
-      currentX += row[0].Size.Item1;
+      currentX += row[0].Size.Height;
       currentY = 0;
     }
 

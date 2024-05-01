@@ -1,3 +1,4 @@
+using bochonok_server_side.model;
 using bochonok_server_side.Model.Image.abstractions;
 
 namespace bochonok_server_side.Model.Image;
@@ -6,7 +7,7 @@ public class QRFinderPattern : QRAtomicGroup<QRAtomic>
 {
   private List<List<QRAtomic>> _patternLayout;
   
-  public QRFinderPattern() : base(new Tuple<int, int>(7,7), 5)
+  public QRFinderPattern() : base(new QRSize(7, 7, 5))
   {
     // 7 * 5 = 35 => 35x35px;
     var layout = GetLayout();

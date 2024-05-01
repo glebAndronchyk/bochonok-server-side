@@ -1,29 +1,23 @@
 
 using bochonok_server_side.model;
-using MathNet.Numerics.LinearAlgebra;
-using SixLabors.ImageSharp.ColorSpaces;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace bochonok_server_side.Model.Image.abstractions;
 
 public abstract class QRAtomic
 {
-  public Tuple<int, int> Size;
+  public QRSize Size;
   
   protected ByteMatrix _bytesMatrix;
   
-  protected QRAtomic(Tuple<int, int>? size, int multiplier = 1)
+  protected QRAtomic(QRSize? qrSize)
   {
-    if (size == null)
+    if (qrSize == null)
     {
       Size = new(5, 5);
     }
-    else
-    {
-      Size = new Tuple<int, int>(size.Item1 * multiplier, size.Item2 * multiplier);
-    }
     
-    _bytesMatrix = new ByteMatrix(Size.Item1, Size.Item2);
+    _bytesMatrix = new ByteMatrix(Size!.Width, Size.Height);
   }
   
   public ByteMatrix GetMatrix()
