@@ -10,10 +10,12 @@ namespace bochonok_server_side.Model.Image;
 //   }
 // }
 
-// QRLayout
-//    .AppendPattern(new QRFinderPattern(), 1,1)
-//    .AppendPattern(new QRFinderPattern(), 10,1)
-//    .AppendPattern(new QRFinderPattern(), 1,10)
-//    .AppendPattern(new QRVersionPattern(), 1,10)
-//    ...
+/*
+ * QRBuilder should have GetRGBA32Array() method.
+ */
+
+// !!!!BuildImage
+// QRBuilder
+//    .AppendPatterns()
+//    .AppendFormatInformation()
 //    .AppendCharsModules(ASCIIEncoder.EncodeAsCharArray(<str>), startPos, endPos)

@@ -2,6 +2,7 @@ using bochonok_server_side.database;
 using bochonok_server_side.interfaces;
 using bochonok_server_side.model;
 using bochonok_server_side.Model.Image;
+using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp.Formats.Png;
@@ -39,17 +40,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//
+// var test = new QRTimingPattern(9);
+// // var test = new QRAlignmentPattern();
+// test.Build();
+// var bytes = test.GetRgba32Bytes();
+// // Console.WriteLine(bytes.Length);
+// using (var image = Image.LoadPixelData<Rgba32>(bytes, 5, 45))
+// { 
+//    image.Mutate((x) => x.Rotate(90));
+//    image.Save("timing.png", new PngEncoder());
+// }
 
-var test = new QRTimingPattern(9);
-// var test = new QRAlignmentPattern();
-test.Build();
-var bytes = test.GetRgba32Bytes();
-// Console.WriteLine(bytes.Length);
-using (var image = Image.LoadPixelData<Rgba32>(bytes, 5, 45))
-{ 
-   image.Mutate((x) => x.Rotate(90));
-   image.Save("timing.png", new PngEncoder());
-}
+QRDataEncoder.EncodeCodewords("Product name Debil12223213123123122", EEncodingMode.BYTE, EVersion.V2);
 
 app.UseHttpsRedirection();
 
