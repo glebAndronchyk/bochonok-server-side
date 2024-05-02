@@ -27,7 +27,22 @@ namespace bochonok_server_side.model
     
     public void Set(int row, int column, byte value)
     {
+      if (row >= _matrix.GetLength(0))
+      {
+        throw new IndexOutOfRangeException("Row index is out of range");
+      } 
+      
+      if (column >= _matrix.GetLength(1))
+      {
+        throw new IndexOutOfRangeException("Column index is out of range");
+      }
+
       _matrix[row, column] = value;
+    }
+    
+    public QRSize GetSize()
+    {
+      return new QRSize(_matrix.GetLength(0), _matrix.GetLength(1));
     }
     
     public byte At(int row, int column)

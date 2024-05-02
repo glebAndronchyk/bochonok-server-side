@@ -26,17 +26,22 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
   // Rework this
   public ByteMatrix Flatten()
   {
-    var result = new ByteMatrix(Size.Width, Size.Height);
+    int resultWidth = _items.Sum(row => row.Any() ? row.Max(item => item.Size.Width) : 0);
+    int resultHeight = _items.Any() ? _items.Max(row => row.Sum(item => item.Size.Height)) : 0;
+
+    var result = new ByteMatrix(resultWidth, resultHeight);
 
     int currentX = 0;
-    int currentY = 0;
+    int currentY;
 
     foreach (List<T> row in _items)
     {
+      currentY = 0;
+
       foreach (T item in row)
       {
         ByteMatrix itemBytes;
-        
+
         if (item is QRAtomicGroup<T> group)
         {
           itemBytes = group.Flatten();
@@ -54,13 +59,10 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
           }
         }
 
-        // Update the current position
-        currentY += item.Size.Width;
+        currentY += item.Size.Height;
       }
 
-      // Update the current position
-      currentX += row[0].Size.Height;
-      currentY = 0;
+      currentX += row.Any() ? row.Max(item => item.Size.Width) : 0;
     }
 
     return result;

@@ -1,22 +1,23 @@
 using bochonok_server_side.model;
 using bochonok_server_side.Model.Image.abstractions;
+using bochonok_server_side.Model.Image.interfaces;
 
 namespace bochonok_server_side.Model.Image;
 
-public class QRFinderPattern : QRAtomicGroup<QRAtomic>
+public class QRFinderPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 {
-  private List<List<QRAtomic>> _patternLayout;
-  
   public QRFinderPattern() : base(new QRSize(7, 7, 5))
+  { }
+
+  public void Build()
   {
     // 7 * 5 = 35 => 35x35px;
-    var layout = GetLayout();
+    var layout = BuildLayout();
     SetItems(layout);
-    _patternLayout = layout;
   }
   
   // TODO: add pattern class and separate this pattern from QRFInderPatter in order to optimize memory usage
-  private List<List<QRAtomic>> GetLayout()
+  public List<List<QRAtomic>> BuildLayout()
   {
     return new List<List<QRAtomic>>
     {

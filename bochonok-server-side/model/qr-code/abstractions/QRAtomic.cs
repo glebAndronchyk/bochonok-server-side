@@ -16,8 +16,12 @@ public abstract class QRAtomic
     {
       Size = new(5, 5);
     }
+    else
+    {
+      Size = qrSize;
+    }
     
-    _bytesMatrix = new ByteMatrix(Size!.Width, Size.Height);
+    _bytesMatrix = new ByteMatrix(Size.Width, Size.Height);
   }
   
   public ByteMatrix GetMatrix()

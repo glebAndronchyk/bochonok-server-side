@@ -4,7 +4,7 @@ using bochonok_server_side.model;
 using bochonok_server_side.Model.Image;
 using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
-using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,18 +40,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var test = new QRFinderPattern().GetRgba32Bytes();
-
-// foreach (var rgba32 in test)
-// {
-//     Console.WriteLine(rgba32.ToString());
-// }
-
-using (var image = Image.LoadPixelData<Rgba32>(test, (int)Math.Sqrt(test.Length), (int)Math.Sqrt(test.Length)))
-{
-   image.Save("test600.jpg", new JpegEncoder());
+var test = new QRTimingPattern(9);
+// var test = new QRAlignmentPattern();
+test.Build();
+var bytes = test.GetRgba32Bytes();
+// Console.WriteLine(bytes.Length);
+using (var image = Image.LoadPixelData<Rgba32>(bytes, 5, 45))
+{ 
+   image.Mutate((x) => x.Rotate(90));
+   image.Save("timing.png", new PngEncoder());
 }
-// File.WriteAllBytes("test600.png", test);
 
 app.UseHttpsRedirection();
 
