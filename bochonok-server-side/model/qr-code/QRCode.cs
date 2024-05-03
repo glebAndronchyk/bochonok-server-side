@@ -24,7 +24,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     {
         return Enumerable.Range(0, Size.Width)
             .Select(_ => Enumerable.Range(0, Size.Height)
-                .Select(_ => _factory.CreateQrModule(0))
+                .Select(_ => _factory.CreateQrModule(2))
                 .ToList())
             .ToList();
     }

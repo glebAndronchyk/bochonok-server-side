@@ -43,7 +43,21 @@ public abstract class QRAtomic : ICloneable
     {
       for (int j = 0; j < bytes.GetLength(1); j++)
       {
-        Rgba32 color = bytes[i,j] == 1 ? Rgba32.ParseHex("#000000") : Rgba32.ParseHex("#ffffff");
+        Rgba32 color;
+
+        switch (bytes[i, j])
+        {
+          case 0:
+            color = Rgba32.ParseHex("#ffffff");
+            break;
+          case 1:
+            color = Rgba32.ParseHex("#000000");
+            break;
+          default:
+            color = Rgba32.ParseHex("#f11f1f");
+            break;
+        }
+        
         rgba32Bytes.Add(color);
       }
     }

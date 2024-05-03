@@ -10,7 +10,7 @@ public class QRModule : QRAtomic
   // TODO: add different color support and implement decorator pattern for easier use.
   public QRModule(byte moduleType, QRSize? size = null) : base(size)
   {
-    if (moduleType > 2)
+    if (moduleType > 3)
     {
       throw new NotImplementedException("Can't use this number for locating module type.");
     }
