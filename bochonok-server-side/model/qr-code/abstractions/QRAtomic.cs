@@ -4,7 +4,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace bochonok_server_side.Model.Image.abstractions;
 
-public abstract class QRAtomic
+public abstract class QRAtomic : ICloneable
 {
   public QRSize Size;
   
@@ -49,5 +49,10 @@ public abstract class QRAtomic
     }
 
     return rgba32Bytes.ToArray();
+  }
+
+  public object Clone()
+  {
+    return MemberwiseClone();
   }
 }

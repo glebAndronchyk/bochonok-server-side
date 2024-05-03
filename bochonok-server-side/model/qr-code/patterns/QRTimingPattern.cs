@@ -10,10 +10,17 @@ public class QRTimingPattern : QRAtomicGroup<QRAtomic>, IQRPattern
   { }
 
   // TODO: think about this
-  public void Build()
+  public IQRPattern Build()
   {
     var layout = BuildLayout();
     SetItems(layout);
+
+    return this;
+  }
+  
+  public QRSize GetSize()
+  {
+    return Size;
   }
   
   // TODO: optimize list usage

@@ -34,8 +34,6 @@ public class QRDataEncoder
     AddTerminatorBits(ref result, maxCodewords);
     PadToMultipleOfEight(ref result);
     AddPadBytes(ref result, maxCodewords);
-
-    Console.WriteLine(result.Length);
     
     return result;
   }

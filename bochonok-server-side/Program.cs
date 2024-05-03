@@ -42,17 +42,17 @@ if (app.Environment.IsDevelopment())
 }
 //
 // var test = new QRTimingPattern(9);
-// // var test = new QRAlignmentPattern();
-// test.Build();
-// var bytes = test.GetRgba32Bytes();
-// // Console.WriteLine(bytes.Length);
-// using (var image = Image.LoadPixelData<Rgba32>(bytes, 5, 45))
-// { 
-//    image.Mutate((x) => x.Rotate(90));
-//    image.Save("timing.png", new PngEncoder());
-// }
+var test = new QRCode("123");
+test.Build();
+var bytes = test.GetRgba32Bytes();
+// Console.WriteLine(bytes.Length);
+using (var image = Image.LoadPixelData<Rgba32>(bytes, (int)Math.Sqrt(bytes.GetLength(0)), (int)Math.Sqrt(bytes.GetLength(0))))
+{ 
+   // image.Mutate((x) => x.Rotate(90));
+   image.Save("timing.png", new PngEncoder());
+}
 
-QRDataEncoder.EncodeCodewords("Product name Debil12223213123123122", EEncodingMode.BYTE, EVersion.V2);
+// QRDataEncoder.EncodeCodewords("Product name Debil12223213123123122", EEncodingMode.BYTE, EVersion.V2);
 
 app.UseHttpsRedirection();
 

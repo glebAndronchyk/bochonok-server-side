@@ -9,11 +9,18 @@ public class QRFinderPattern : QRAtomicGroup<QRAtomic>, IQRPattern
   public QRFinderPattern() : base(new QRSize(7, 7, 5))
   { }
 
-  public void Build()
+  public IQRPattern Build()
   {
     // 7 * 5 = 35 => 35x35px;
     var layout = BuildLayout();
     SetItems(layout);
+
+    return this;
+  }
+  
+  public QRSize GetSize()
+  {
+    return Size;
   }
   
   // TODO: add pattern class and separate this pattern from QRFInderPatter in order to optimize memory usage

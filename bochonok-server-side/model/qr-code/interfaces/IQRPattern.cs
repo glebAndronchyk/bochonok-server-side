@@ -5,6 +5,8 @@ namespace bochonok_server_side.Model.Image.interfaces;
 
 public interface IQRPattern
 {
-  public void Build();
+  public IQRPattern Build();
   public List<List<QRAtomic>> BuildLayout();
+  public QRSize GetSize();
+  public List<List<QRAtomic>> GetAtomicItems();
 }

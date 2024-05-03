@@ -1,4 +1,5 @@
 using bochonok_server_side.model;
+using bochonok_server_side.model.utility_classes;
 
 namespace bochonok_server_side.Model.Image.abstractions;
 
@@ -20,16 +21,21 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
   {
     _items = items;
     var r = Flatten();
-    _bytesMatrix = r;
+    _bytesMatrix = r.bytesMatrix;
+  }
+  
+  public List<List<T>> GetAtomicItems()
+  {
+    return _items;
   }
 
   // Rework this
-  public ByteMatrix Flatten()
+  public FlattenGroup Flatten()
   {
     int resultWidth = _items.Sum(row => row.Any() ? row.Max(item => item.Size.Width) : 0);
     int resultHeight = _items.Any() ? _items.Max(row => row.Sum(item => item.Size.Height)) : 0;
 
-    var result = new ByteMatrix(resultWidth, resultHeight);
+    var result = new FlattenGroup(resultWidth, resultHeight);
 
     int currentX = 0;
     int currentY;
@@ -44,7 +50,7 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
 
         if (item is QRAtomicGroup<T> group)
         {
-          itemBytes = group.Flatten();
+          itemBytes = group.Flatten().bytesMatrix;
         }
         else
         {
@@ -55,7 +61,8 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
         {
           for (int j = 0; j < item.Size.Height; j++)
           {
-            result.Set(currentX + i, currentY + j, itemBytes.At(i, j));
+            result.atomicItems.Add(item);
+            result.bytesMatrix.Set(currentX + i, currentY + j, itemBytes.At(i, j));
           }
         }
 
