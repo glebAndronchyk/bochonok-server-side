@@ -112,6 +112,7 @@ public class QRDataEncoder
     }
   }
   
+  // TODO: check, there maybe a problem with what being passed to the method, maybe i should use only previously achieved data
   private static void AddErrorCorrectionBytes(ref string data, string initialMessage)
   {
     int errorCorrectionCodewordsAmount = 10;

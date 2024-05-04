@@ -15,6 +15,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     private QRAtomicsFactory _factory = new ();
     
     // TODO: add dynamic value for size
+    // TODO: add qr version selection
     public QRCode(string encodeString): base(new QRSize(25, 25))
     {
         _encodeString = encodeString;
@@ -42,14 +43,12 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
             .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
-            .AddModule(new QRModule(1), new Point(17, 8), true)
+            .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
             // .ApplyMask()
             .RetrieveItems();
         // .AddPattern(new QRTimingPattern())
         // .AddPattern(new QRTimingPattern())
-        // .AddIterative()
-        // .AddIterative()
         SetItems(buildedQR);
     }
 
