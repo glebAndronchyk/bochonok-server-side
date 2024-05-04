@@ -34,6 +34,7 @@ public class QRBuilder
 
   public QRBuilder AddIterative(string bits)
   {
+    Console.WriteLine(bits);
     int x = _qrCtx.Size.Width - 1;
     int y = _qrCtx.Size.Height;
     int bitCounter = 0;
@@ -45,8 +46,8 @@ public class QRBuilder
     while (x > 2)
     {
       y = direction == EFillDirection.Upwards ? y - 1 : y + 1;
-
-      if (y == -1 || y == 25)
+      
+      if (y is -1 or 25)
       {
         x -= 2;
         direction = direction == EFillDirection.Upwards ?
@@ -55,8 +56,9 @@ public class QRBuilder
       }
       else
       {
+        var yModulePos = GetYModulePositionByDirection(x, y, direction);
         var xModule = (QRModule)_items[y][x - 1];
-        var yModule = (QRModule)_items[y][x];
+        var yModule = (QRModule)_items[yModulePos.Item2][yModulePos.Item1];
 
         if (xModule.Type == 2)
         {
@@ -75,7 +77,7 @@ public class QRBuilder
             return this;
           }
         
-          _items[y][x] = new QRModule(byte.Parse(bits[bitCounter++].ToString()));
+          _items[yModulePos.Item2][yModulePos.Item1] = new QRModule(byte.Parse(bits[bitCounter++].ToString()));
         } 
       }
     }
@@ -88,8 +90,17 @@ public class QRBuilder
     return _items;
   }
   
-  private int GetYPosByDirection(int y, EFillDirection direction)
+  private Tuple<int, int> GetYModulePositionByDirection(int x, int y, EFillDirection direction)
   {
-    return direction == EFillDirection.Upwards ? y - 1 : y + 1;
+    var nextY = direction == EFillDirection.Upwards ? y - 1 : y + 1;
+    var nextX = x;
+    
+    if (nextY is -1 or 25)
+    {
+      nextY = nextY > 0 ? nextY - 1 : nextY + 1;
+      nextX -= 2;
+    }
+    
+    return new (nextX, nextY);
   }
 }
