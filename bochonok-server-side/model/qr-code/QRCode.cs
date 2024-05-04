@@ -40,6 +40,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddPattern(new QRFinderPattern(), Size.Width - 7, 0)
             .AddPattern(new QRFinderPattern(), 0, Size.Height - 7)
             .AddPattern(new QRAlignmentPattern(), Size.Width - 9, Size.Height - 9)
+            .AddIterative(encodedString)
             .RetrieveItems();
         // .AddPattern(new QRTimingPattern())
         // .AddPattern(new QRTimingPattern())
