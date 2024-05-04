@@ -31,8 +31,6 @@ public class QRBuilder
     var endPoint = new Point(x + patternSize.Width, y + patternSize.Height);
     
     _maskSafeZones.Add(new AreaCoordinates(start, endPoint));
-
-    Console.WriteLine(start + " " + endPoint);
     
     for (int i = x; i < endPoint.GetX(); i++)
     {
