@@ -43,8 +43,13 @@ public class QRBuilder
     return this;
   }
 
-  public QRBuilder AddModule(QRModule module, Point pos)
+  public QRBuilder AddModule(QRModule module, Point pos, bool protectFromMask = false)
   {
+    if (protectFromMask)
+    {
+      _maskSafeZones.Add(new AreaCoordinates(pos, pos));
+    }
+
     _items[pos.GetX()][pos.GetY()] = module;
 
     return this;

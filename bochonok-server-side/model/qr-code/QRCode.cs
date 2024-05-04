@@ -42,7 +42,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
             .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
-            .AddModule(new QRModule(1), new Point(17, 8))
+            .AddModule(new QRModule(1), new Point(17, 8), true)
             .AddIterative(encodedString)
             // .ApplyMask()
             .RetrieveItems();
