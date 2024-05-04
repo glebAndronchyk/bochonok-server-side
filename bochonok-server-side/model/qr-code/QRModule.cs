@@ -18,4 +18,14 @@ public class QRModule : QRAtomic
     Type = moduleType;
     _bytesMatrix.Add(moduleType); 
   }
+
+  public QRModule ReverseBit()
+  {
+    if (Type >= 2)
+    {
+      throw new Exception("Bit wasn't set for module.");
+    }
+
+    return new QRModule(Convert.ToByte(!Convert.ToBoolean(Type)));
+  }
 }

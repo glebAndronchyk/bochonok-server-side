@@ -1,5 +1,3 @@
-using System.Text;
-using bochonok_server_side.model.abstractions;
 using bochonok_server_side.model.encoding;
 using bochonok_server_side.Model.Image.enums;
 using Newtonsoft.Json.Linq;

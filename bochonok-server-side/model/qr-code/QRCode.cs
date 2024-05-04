@@ -1,8 +1,9 @@
-﻿using bochonok_server_side.builder;
+﻿using bochonok_server_side.builders;
 using bochonok_server_side.factories;
 using bochonok_server_side.model;
 using bochonok_server_side.Model.Image.abstractions;
 using bochonok_server_side.Model.Image.enums;
+using Point = bochonok_server_side.model.utility_classes.Point;
 
 namespace bochonok_server_side.Model.Image;
 
@@ -36,17 +37,17 @@ public class QRCode : QRAtomicGroup<QRAtomic>
 
         // TODO: check finder size without hardcoding
         var buildedQR = builder
-            .AddPattern(new QRFinderPattern(), 0, 0)
-            .AddPattern(new QRFinderPattern(), Size.Width - 7, 0)
-            .AddPattern(new QRFinderPattern(), 0, Size.Height - 7)
-            .AddPattern(new QRAlignmentPattern(), Size.Width - 9, Size.Height - 9)
+            .AddPattern(new QRFinderPattern(), new Point(0, 0))
+            .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
+            .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
+            .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
             .AddIterative(encodedString)
+            .ApplyMask()
             .RetrieveItems();
         // .AddPattern(new QRTimingPattern())
         // .AddPattern(new QRTimingPattern())
         // .AddIterative()
         // .AddIterative()
-        // .ApplyMask()
         SetItems(buildedQR);
     }
 
