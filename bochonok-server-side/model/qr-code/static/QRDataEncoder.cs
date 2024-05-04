@@ -1,6 +1,7 @@
 using bochonok_server_side.model.encoding;
 using bochonok_server_side.Model.Image.enums;
 using Newtonsoft.Json.Linq;
+using STH1123.ReedSolomon;
 
 namespace bochonok_server_side.Model.Image;
 
@@ -8,6 +9,7 @@ public class QRDataEncoder
 {
   private static readonly string _bin236 = "11101100";
   private static readonly string _bin17 = "00010001";
+  private static readonly ReedSolomonEncoder _rsEncoder = new ReedSolomonEncoder(new GenericGF(285, 256, 0));
   
   public static string EncodeCodewords(string str, EEncodingMode mode, EVersion version)
   {
@@ -32,7 +34,8 @@ public class QRDataEncoder
     AddTerminatorBits(ref result, maxCodewords);
     PadToMultipleOfEight(ref result);
     AddPadBytes(ref result, maxCodewords);
-    
+    AddErrorCorrectionBytes(ref result, str);
+
     return result;
   }
 
@@ -107,5 +110,29 @@ public class QRDataEncoder
         }
       }
     }
+  }
+  
+  private static void AddErrorCorrectionBytes(ref string data, string initialMessage)
+  {
+    int errorCorrectionCodewordsAmount = 10;
+    
+    int[] intParts = initialMessage
+      .ToCharArray()
+      .Select(part => (int)Convert.ToByte(part))
+      .Concat(Enumerable
+        .Range(0, errorCorrectionCodewordsAmount)
+        .Select(_ => 0x00))
+      .ToArray();
+    
+    // 10 -is hardcoded value related to 2-L row of https://www.thonky.com/qr-code-tutorial/error-correction-table
+    // TODO: here can be a mistake, because intParts not in hex format
+    _rsEncoder.Encode(intParts, errorCorrectionCodewordsAmount);
+    
+    var errorCorrectionBinary = intParts
+      .Skip(initialMessage.Length)
+      .Select(part => Convert.ToString(part, 2))
+      .ToArray();
+    
+    data += String.Join("", errorCorrectionBinary);
   }
 }

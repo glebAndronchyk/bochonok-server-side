@@ -42,7 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 //
 // var test = new QRTimingPattern(9);
-var test = new QRCode("hello world1223456132");
+var test = new QRCode("Hello World");
 test.Build();
 var bytes = test.GetRgba32Bytes();
 // Console.WriteLine(bytes.Length);

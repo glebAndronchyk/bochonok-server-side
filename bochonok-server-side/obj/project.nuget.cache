@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "r3S/ugRoV/whtTpKVcZ0c7Yr6hWMkphmnnTHgItPWqzVbZjzM598YzvprUnyUX/qTvA5BuWV8WZjYfYEG5evLQ==",
+  "dgSpecHash": "CHDHb9IcUgjtyx01igCk9S6y0ZecVnm8V0Pjyov1odtes5Q6YhxvFPKvEga1GUaRj/gdC1mM0O21JUsRHWTQrQ==",
   "success": true,
   "projectFilePath": "/Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/bochonok-server-side.csproj",
   "expectedPackageFiles": [
@@ -59,6 +59,7 @@
     "/Users/gandronchyk/.nuget/packages/sqlitepclraw.core/2.1.4/sqlitepclraw.core.2.1.4.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.4/sqlitepclraw.lib.e_sqlite3.2.1.4.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/sqlitepclraw.provider.e_sqlite3/2.1.4/sqlitepclraw.provider.e_sqlite3.2.1.4.nupkg.sha512",
+    "/Users/gandronchyk/.nuget/packages/sth1123.reedsolomon/2.1.0/sth1123.reedsolomon.2.1.0.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.4.0/swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
