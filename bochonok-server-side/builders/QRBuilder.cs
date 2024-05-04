@@ -43,6 +43,13 @@ public class QRBuilder
     return this;
   }
 
+  public QRBuilder AddModule(QRModule module, Point pos)
+  {
+    _items[pos.GetX()][pos.GetY()] = module;
+
+    return this;
+  }
+
   public QRBuilder AddIterative(string bits)
   {
     int x = _qrCtx.Size.Width - 1;

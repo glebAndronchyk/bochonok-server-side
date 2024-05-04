@@ -36,11 +36,13 @@ public class QRCode : QRAtomicGroup<QRAtomic>
         var  encodedString = Encode();
 
         // TODO: check finder size without hardcoding
+        // TODO: fix axis
         var buildedQR = builder
             .AddPattern(new QRFinderPattern(), new Point(0, 0))
             .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
             .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
+            .AddModule(new QRModule(1), new Point(17, 8))
             .AddIterative(encodedString)
             // .ApplyMask()
             .RetrieveItems();
