@@ -61,8 +61,9 @@ public class QRBuilder
     int y = _qrCtx.Size.Height;
     int bitCounter = 0;
     var direction = EFillDirection.Upwards;
-
-    _items[x][y - 1] = GetNewModule(bits, ref bitCounter);
+    var bitsContainer = new BitsContainer(bits, true);
+    
+    _items[x][y - 1] = GetNewModule(bitsContainer);
     
     while (x >= 0)
     {
@@ -85,17 +86,77 @@ public class QRBuilder
         var yModulePos = GetYModulePositionByDirection(x, y, direction);
         var xModuleAbscissa = x - 1 < 0 ? 0 : x - 1;
         var nextXModule = (QRModule)_items[y][xModuleAbscissa];
-        var nextYModule = (QRModule)_items[yModulePos.Item2][yModulePos.Item1];
+        var nextYModule = (QRModule)_items[yModulePos.Y][yModulePos.X];
 
-        var xModuleProcessResult = ProcessNextModule(nextXModule, bits, ref bitCounter, xModuleAbscissa, y);
-        if (xModuleProcessResult != null) return xModuleProcessResult;
+        var xModuleProcessResult = ProcessNextModule(nextXModule, bitsContainer, new Point(xModuleAbscissa, y));
+        if (!xModuleProcessResult) return this;
         
-        var yModuleProcessResult = ProcessNextModule(nextYModule, bits, ref bitCounter, yModulePos.Item1, yModulePos.Item2);
-        if (yModuleProcessResult != null) return yModuleProcessResult;
+        var yModuleProcessResult = ProcessNextModule(nextYModule, bitsContainer, new Point(yModulePos.X, yModulePos.Y));
+        if (!yModuleProcessResult) return this;
       }
     }
 
     return this;
+  }
+
+  public QRBuilder AddFormatInfo(string formatInfo)
+  {
+    var zeroToSix = formatInfo.Substring(0, 7);
+    var sixToFourteenth = formatInfo.Substring(6, 8);
+    
+    
+    PlaceBitsInSequence(zeroToSix,
+      new Point(_qrCtx.Size.Height - 1, 8),
+      new Point(8, 0),
+      new Point(-1, 1)
+      );
+    PlaceBitsInSequence(
+      sixToFourteenth,
+      new Point(8, 8),
+      new Point(8, _qrCtx.Size.Height - 8),
+      new Point(-1, 1)
+    );
+
+    return this;
+  }
+
+  private void PlaceBitsInSequence(string zeroToSix, Point verticalStart, Point horizontalStart, Point increasers)
+  {
+    // TODO: point and size same signature
+    var verticalCopy = new Point(verticalStart);
+    var horizontalCopy = new Point(horizontalStart);
+    var bitsContainer = new BitsContainer(zeroToSix, false);
+    
+    while (bitsContainer.HasNext())
+    {
+      var xCoord = verticalCopy.X;
+      var yCoord = horizontalCopy.Y;
+      
+      var nextVerticalModule = (QRModule)_items[xCoord][verticalCopy.Y];
+      var nextHorizontalModule = (QRModule)_items[horizontalCopy.X][yCoord];
+
+      if (nextVerticalModule.Type is 0 or 1)
+      {
+        xCoord += increasers.X;
+      }
+      
+      if (nextHorizontalModule.Type is 0 or 1)
+      {
+        yCoord += increasers.Y;
+      }
+      
+      var verticalSafeZonePoint = new Point(xCoord, verticalCopy.Y);
+      var horizontalSafeZonePoint = new Point(horizontalCopy.X, yCoord);
+      _maskSafeZones.Add(new AreaCoordinates(verticalSafeZonePoint, verticalSafeZonePoint));
+      _maskSafeZones.Add(new AreaCoordinates(horizontalSafeZonePoint, horizontalSafeZonePoint));
+
+      _items[xCoord][verticalCopy.Y] = GetNewModule(bitsContainer);
+      _items[horizontalCopy.X][yCoord] = GetNewModule(bitsContainer);
+      
+      verticalCopy.X += increasers.X;
+      horizontalCopy.Y += increasers.Y;
+      bitsContainer.TryIncrementCounter(true);
+    }
   }
 
   public QRBuilder ApplyMask()
@@ -143,27 +204,30 @@ public class QRBuilder
     return _items;
   }
   
-  private QRBuilder? ProcessNextModule(QRModule module, string bits, ref int bitCounter, int x, int y)
+  private bool ProcessNextModule(QRModule module, BitsContainer bitsContainer, Point pos)
   {
     if (module.Type == 2)
     {
-      if (bitCounter >= bits.Length)
+      if (!bitsContainer.HasNext())
       {
-        return this;
+        return false;
       }
       
-      _items[y][x] = GetNewModule(bits, ref bitCounter);
+      _items[pos.GetY()][pos.GetX()] = GetNewModule(bitsContainer);
     }
-    
-    return null;
+
+    return true;
   }
   
-  private QRModule GetNewModule(string bits, ref int bitCounter)
+  private QRModule GetNewModule(BitsContainer bitsContainer)
   {
-    return new QRModule(byte.Parse(bits[bitCounter++].ToString()));
+    var currentBit = bitsContainer.GetCurrent();
+    bitsContainer.TryIncrementCounter();
+    
+    return new QRModule(byte.Parse(currentBit));
   }
   
-  private Tuple<int, int> GetYModulePositionByDirection(int x, int y, EFillDirection direction)
+  private Point GetYModulePositionByDirection(int x, int y, EFillDirection direction)
   {
     var nextY = direction == EFillDirection.Upwards ? y - 1 : y + 1;
     var nextX = x;

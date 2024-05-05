@@ -35,14 +35,17 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     {
         var  builder = new QRBuilder(this);
         var  encodedString = Encode();
-
+        
         // TODO: check finder size without hardcoding
         // TODO: fix axis
+        // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
         var buildedQR = builder
             .AddPattern(new QRFinderPattern(), new Point(0, 0))
             .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
             .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
+            .AddPattern(new QRTimingPattern(9), new Point(8, 6))
+            .AddFormatInfo("110100101110110")
             .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
             // .ApplyMask()

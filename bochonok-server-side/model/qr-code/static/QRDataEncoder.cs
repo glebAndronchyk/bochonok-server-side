@@ -9,7 +9,7 @@ public class QRDataEncoder
 {
   private static readonly string _bin236 = "11101100";
   private static readonly string _bin17 = "00010001";
-  private static readonly ReedSolomonEncoder _rsEncoder = new ReedSolomonEncoder(new GenericGF(285, 256, 0));
+  private static readonly ReedSolomonEncoder _rsEncoder = new (new GenericGF(285, 256, 0));
   
   public static string EncodeCodewords(string str, EEncodingMode mode, EVersion version)
   {
@@ -34,9 +34,10 @@ public class QRDataEncoder
     AddTerminatorBits(ref result, maxCodewords);
     PadToMultipleOfEight(ref result);
     AddPadBytes(ref result, maxCodewords);
-    AddErrorCorrectionBytes(ref result, str);
+    AddErrorCorrectionBytes(ref result, str, maxBits);
 
-    return result;
+    // TODO: this should be described
+    return result + "0000000";
   }
 
   private static void EncodeEntryString(ref string data, string inputString)
@@ -113,7 +114,7 @@ public class QRDataEncoder
   }
   
   // TODO: check, there maybe a problem with what being passed to the method, maybe i should use only previously achieved data
-  private static void AddErrorCorrectionBytes(ref string data, string initialMessage)
+  private static void AddErrorCorrectionBytes(ref string data, string initialMessage, byte maxBits)
   {
     int errorCorrectionCodewordsAmount = 10;
     
@@ -131,7 +132,7 @@ public class QRDataEncoder
     
     var errorCorrectionBinary = intParts
       .Skip(initialMessage.Length)
-      .Select(part => Convert.ToString(part, 2))
+      .Select(part => Pad(Convert.ToString(part, 2), maxBits))
       .ToArray();
     
     data += String.Join("", errorCorrectionBinary);

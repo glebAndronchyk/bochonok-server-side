@@ -2,7 +2,6 @@ using bochonok_server_side.database;
 using bochonok_server_side.interfaces;
 using bochonok_server_side.model;
 using bochonok_server_side.Model.Image;
-using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp.Formats.Png;
@@ -49,7 +48,7 @@ var bytes = test.GetRgba32Bytes();
 using (var image = Image.LoadPixelData<Rgba32>(bytes, (int)Math.Sqrt(bytes.GetLength(0)), (int)Math.Sqrt(bytes.GetLength(0))))
 { 
    // image.Mutate((x) => x.Rotate(90));
-   image.Save("qrcode-mask.png", new PngEncoder());
+   image.Save("qrcode-format.png", new PngEncoder());
 }
 
 // QRDataEncoder.EncodeCodewords("Product name Debil12223213123123122", EEncodingMode.BYTE, EVersion.V2);
