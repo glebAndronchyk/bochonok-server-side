@@ -43,6 +43,22 @@ public class QRBuilder
     return this;
   }
 
+  public QRBuilder AddTiming(int length)
+  {
+    Point verticalStart = new (8, 6);
+    Point horizontalStart = new (6, 8);
+
+    string timingBits = string.Join("", Enumerable.Range(0, length).Select((_, i) => i % 2 == 0 ? "1" : "0"));
+    
+    PlaceBitsInSequence(timingBits,
+      verticalStart,
+      horizontalStart,
+      new (1, 1)
+    );
+
+    return this;
+  }
+
   public QRBuilder AddFindersSafeZone()
   {
     var finderAreas = _maskSafeZones.Where(zone => zone.Name == "finder").ToList();
@@ -72,7 +88,7 @@ public class QRBuilder
         horizontalStart = new (topLeftCoord.X - 1, 0);
       }
       
-      PlaceBitsInSequence(safeZoneBits.Substring(0, safeZoneBits.Length),
+      PlaceBitsInSequence(safeZoneBits,
         verticalStart,
         horizontalStart,
         new (1, 1),

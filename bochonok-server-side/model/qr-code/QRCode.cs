@@ -45,11 +45,11 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7), "finder")
             .AddFindersSafeZone()
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9), "alignment")
-            .AddPattern(new QRTimingPattern(9), new Point(8, 6), "timing")
+            .AddTiming(9)
             .AddFormatInfo("110100101110110")
             .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
-            // .ApplyMask()
+            .ApplyMask()
             .RetrieveItems();
         SetItems(buildedQR);
     }
