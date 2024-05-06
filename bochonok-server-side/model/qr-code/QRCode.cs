@@ -40,18 +40,17 @@ public class QRCode : QRAtomicGroup<QRAtomic>
         // TODO: fix axis
         // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
         var buildedQR = builder
-            .AddPattern(new QRFinderPattern(), new Point(0, 0))
-            .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0))
-            .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7))
-            .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9))
-            .AddPattern(new QRTimingPattern(9), new Point(8, 6))
+            .AddPattern(new QRFinderPattern(), new Point(0, 0), "finder")
+            .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0), "finder")
+            .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7), "finder")
+            .AddFindersSafeZone()
+            .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9), "alignment")
+            .AddPattern(new QRTimingPattern(9), new Point(8, 6), "timing")
             .AddFormatInfo("110100101110110")
             .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
             // .ApplyMask()
             .RetrieveItems();
-        // .AddPattern(new QRTimingPattern())
-        // .AddPattern(new QRTimingPattern())
         SetItems(buildedQR);
     }
 

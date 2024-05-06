@@ -14,7 +14,7 @@ public class QRBuilder
   private QRAtomicGroup<QRAtomic> _qrCtx;
   private List<List<QRAtomic>> _items;
   
-  private List<AreaCoordinates> _maskSafeZones = new ();
+  private List<DescribedArea> _maskSafeZones = new ();
   
   public QRBuilder(QRAtomicGroup<QRAtomic> qrCtx)
   {
@@ -22,7 +22,7 @@ public class QRBuilder
     _items = _qrCtx.GetAtomicItems();
   }
 
-  public QRBuilder AddPattern(IQRPattern pattern, Point start)
+  public QRBuilder AddPattern(IQRPattern pattern, Point start, string name)
   {
     pattern.Build();
     var patternSize = pattern.GetSize().GetDividedSize();
@@ -30,7 +30,7 @@ public class QRBuilder
     var y = start.GetY();
     var endPoint = new Point(x + patternSize.Width, y + patternSize.Height);
     
-    _maskSafeZones.Add(new AreaCoordinates(start, endPoint));
+    _maskSafeZones.Add(new DescribedArea(start, endPoint, name));
     
     for (int i = x; i < endPoint.GetX(); i++)
     {
@@ -43,11 +43,51 @@ public class QRBuilder
     return this;
   }
 
+  public QRBuilder AddFindersSafeZone()
+  {
+    var finderAreas = _maskSafeZones.Where(zone => zone.Name == "finder").ToList();
+    var safeZoneBits = String.Join("", Enumerable.Range(0, 8).Select(_ => "0"));
+    
+    foreach (var area in finderAreas)
+    {
+      Point verticalStart = new (0, 0);
+      Point horizontalStart = new (0, 0);
+      var topLeftCoord = area.TopLeftCorner;
+      
+      switch (topLeftCoord.Y)
+      {
+        case 0:
+          verticalStart = new (0, 7);
+          horizontalStart = new (7, 0);
+          break;
+        case 18:
+          verticalStart = new (0, topLeftCoord.Y - 1);
+          horizontalStart = new (topLeftCoord.X + 7, topLeftCoord.Y - 1);
+          break;
+      }
+
+      if (topLeftCoord.X is > 0 and < 24)
+      {
+        verticalStart = new (topLeftCoord.X - 1, topLeftCoord.Y + 7);
+        horizontalStart = new (topLeftCoord.X - 1, 0);
+      }
+      
+      PlaceBitsInSequence(safeZoneBits.Substring(0, safeZoneBits.Length),
+        verticalStart,
+        horizontalStart,
+        new (1, 1),
+        true
+      );
+    }
+
+    return this;
+  }
+
   public QRBuilder AddModule(QRModule module, Point pos, bool protectFromMask = false)
   {
     if (protectFromMask)
     {
-      _maskSafeZones.Add(new AreaCoordinates(pos, pos));
+      _maskSafeZones.Add(new DescribedArea(pos, pos));
     }
 
     _items[pos.GetX()][pos.GetY()] = module;
@@ -59,7 +99,6 @@ public class QRBuilder
   {
     int x = _qrCtx.Size.Width - 1;
     int y = _qrCtx.Size.Height;
-    int bitCounter = 0;
     var direction = EFillDirection.Upwards;
     var bitsContainer = new BitsContainer(bits, true);
     
@@ -120,7 +159,7 @@ public class QRBuilder
     return this;
   }
 
-  private void PlaceBitsInSequence(string zeroToSix, Point verticalStart, Point horizontalStart, Point increasers)
+  private void PlaceBitsInSequence(string zeroToSix, Point verticalStart, Point horizontalStart, Point increasers, bool ignoreModuleSkip = false)
   {
     // TODO: point and size same signature
     var verticalCopy = new Point(verticalStart);
@@ -135,20 +174,20 @@ public class QRBuilder
       var nextVerticalModule = (QRModule)_items[xCoord][verticalCopy.Y];
       var nextHorizontalModule = (QRModule)_items[horizontalCopy.X][yCoord];
 
-      if (nextVerticalModule.Type is 0 or 1)
+      if (nextVerticalModule.Type is 0 or 1 && !ignoreModuleSkip)
       {
         xCoord += increasers.X;
       }
       
-      if (nextHorizontalModule.Type is 0 or 1)
+      if (nextHorizontalModule.Type is 0 or 1 && !ignoreModuleSkip)
       {
         yCoord += increasers.Y;
       }
       
       var verticalSafeZonePoint = new Point(xCoord, verticalCopy.Y);
       var horizontalSafeZonePoint = new Point(horizontalCopy.X, yCoord);
-      _maskSafeZones.Add(new AreaCoordinates(verticalSafeZonePoint, verticalSafeZonePoint));
-      _maskSafeZones.Add(new AreaCoordinates(horizontalSafeZonePoint, horizontalSafeZonePoint));
+      _maskSafeZones.Add(new DescribedArea(verticalSafeZonePoint, verticalSafeZonePoint));
+      _maskSafeZones.Add(new DescribedArea(horizontalSafeZonePoint, horizontalSafeZonePoint));
 
       _items[xCoord][verticalCopy.Y] = GetNewModule(bitsContainer);
       _items[horizontalCopy.X][yCoord] = GetNewModule(bitsContainer);

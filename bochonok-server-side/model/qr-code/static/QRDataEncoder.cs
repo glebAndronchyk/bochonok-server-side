@@ -37,7 +37,7 @@ public class QRDataEncoder
     AddErrorCorrectionBytes(ref result, str, maxBits);
 
     // TODO: this should be described
-    return result + "0000000";
+    return result + "00000000";
   }
 
   private static void EncodeEntryString(ref string data, string inputString)
