@@ -10,16 +10,11 @@ namespace bochonok_server_side.Controllers
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class ProductsController : ControllerBase
+  public class ProductsController : BaseController.BaseController
   {
-    private readonly DataContext _context;
-    private readonly IMapper _mapper;
-
     public ProductsController(DataContext context, IMapper mapper)
-    {
-      _context = context;
-      _mapper = mapper;
-    }
+      :base(context, mapper)
+    { }
 
     // GET: api/Products
     [HttpGet]
