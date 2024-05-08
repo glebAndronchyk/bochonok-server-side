@@ -35,6 +35,19 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="dto\" />
+      <Folder Include="model\catalog\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="dto\ItemWithId.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="api\" />
+    </ItemGroup>
+
 
 
 

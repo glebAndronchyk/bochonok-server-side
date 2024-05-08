@@ -16,8 +16,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
-builder.Services.AddScoped<IEntityService<CatalogItem>, EntityService<CatalogItem>>();
+// builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
+// builder.Services.AddScoped<IEntityService<CatalogItem>, EntityService<CatalogItem>>();
 
 // cors
 builder.Services.AddCors(options =>
