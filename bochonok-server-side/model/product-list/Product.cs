@@ -6,7 +6,7 @@ public class Product
     // public List<SaleDTO> sales
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public string ImagePath { get; private set; }
+    public string ImageB64 { get; private set; }
     public double Price { get; private set; }
     public string LongDescription { get; private set; }
     public string CategoryId { get; private set; }
@@ -14,12 +14,12 @@ public class Product
     public double Rating { get; private set; } = 0;
     public int TotalRated { get; private set; } = 0;
 
-    public Product(string id, string name, string description, string imagePath, string longDescription, string categoryId)
+    public Product(string id, string name, string description, string imageB64, string longDescription, string categoryId)
     {
         Id = id;
         Name = name;
         Description = description;
-        ImagePath = imagePath;
+        ImageB64 = imageB64;
         LongDescription = longDescription;
         CategoryId = categoryId;
     }
@@ -29,7 +29,7 @@ public class Product
         Id = new Guid().ToString();
         Name = p.Name;
         Description = p.Description;
-        ImagePath = p.ImagePath;
+        ImageB64 = p.ImageB64;
         Price = p.Price;
         LongDescription = p.LongDescription;
         CategoryId = p.CategoryId;
