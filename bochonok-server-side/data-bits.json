@@ -1,0 +1,10 @@
+{
+  "data-bits": {
+    "elements": [
+      {
+        "name":  "25-100",
+        "bits": 8
+      }
+    ]
+  }
+}
