@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
         <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.17" />
@@ -33,20 +34,9 @@
 
 
 
+
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="dto\" />
-      <Folder Include="model\catalog\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="dto\ItemWithId.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="api\" />
-    </ItemGroup>
 
 
 
