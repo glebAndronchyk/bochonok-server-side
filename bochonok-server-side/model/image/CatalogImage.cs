@@ -12,9 +12,4 @@ public class CatalogImage: ImageBase
     {
         return new Shape();
     }
-
-    public ImageBase FillShapeWith()
-    {
-        return new ImageBase(new byte[]{});
-    }
 }

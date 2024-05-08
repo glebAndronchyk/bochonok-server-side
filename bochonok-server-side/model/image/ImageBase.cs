@@ -1,13 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 
 namespace bochonok_server_side.Model.Image;
 
 public class ImageBase
 {
     protected readonly byte[] ByteArray;
-    protected readonly SixLabors.ImageSharp.Image<Rgba32> Img; 
+    protected readonly Image<Rgba32> Img;
     
     public ImageBase(string src)
     {
@@ -35,7 +34,14 @@ public class ImageBase
         return new ImageBase(GetByteArrayFromImage(grayscaleImage));
     }
 
+    public string Save()
+    {
+        return "";
+    }
+
     public byte[] GetByteArray() => ByteArray;
+
+    public string GetB64() => Convert.ToBase64String(ByteArray);
 
     private static byte[] GetByteArrayFromImage(SixLabors.ImageSharp.Image<Rgba32> img)
     {
