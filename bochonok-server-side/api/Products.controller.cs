@@ -21,12 +21,12 @@ namespace bochonok_server_side.Controllers
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
     {
       var products = await _context.ProductList.ToListAsync();
-      return _mapper.Map<List<ProductDTO>>(products);
+      return products;
     }
 
     // GET: api/Products/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProductDTO>> GetProduct(int id)
+    public async Task<ActionResult<ProductDTO>> GetProduct(string id)
     {
       var product = await _context.ProductList.FindAsync(id);
 
@@ -35,7 +35,7 @@ namespace bochonok_server_side.Controllers
         return NotFound();
       }
 
-      return (_mapper.Map<ProductDTO>(product));
+      return Ok(product);
     }
 
     // GET: api/Products/Category/5
@@ -46,13 +46,13 @@ namespace bochonok_server_side.Controllers
         .Where(p => p.categoryId == categoryId)
         .ToListAsync();
 
-      return Ok(_mapper.Map<List<SimplifiedProductDTO>>(products));
+      return Ok(products);
     }
     
     [HttpPost]
-    public async Task<ActionResult<ProductDTO>> AddProduct(ProductDTO productDto)
+    public async Task<ActionResult<ProductDTO>> AddProduct(ProductTransferObject productBody)
     {
-      productDto.id = new Guid().ToString();
+      var productDto = _mapper.Map<ProductTransferObject, ProductDTO>(productBody);
       _context.ProductList.Add(productDto);
       await _context.SaveChangesAsync();
 
@@ -61,7 +61,7 @@ namespace bochonok_server_side.Controllers
 
     // PUT: api/Products/5/Rating
     [HttpPut("{id}/Rating")]
-    public async Task<IActionResult> ChangeProductRating(int id, [FromBody] double newRating)
+    public async Task<IActionResult> ChangeProductRating(string id, [FromBody] double newRating)
     {
       var productDto = await _context.ProductList.FindAsync(id);
 
@@ -70,12 +70,15 @@ namespace bochonok_server_side.Controllers
         return NotFound();
       }
 
-      var product = _mapper.Map<Product>(productDto);
+      var product = _mapper.Map<ProductDTO, Product>(productDto);
       product.ChangeRating(newRating);
-      var updatedProductDto = _mapper.Map<ProductDTO>(product);
 
-      _context.ProductList.Remove(productDto);
-      _context.ProductList.Add(updatedProductDto);
+      await _context.ProductList.Where(p => p.id == id)
+        .ExecuteUpdateAsync(updates =>
+            updates.SetProperty(p => p.rating, product.Rating)
+              .SetProperty(p => p.totalRating, product.TotalRating)
+              .SetProperty(p => p.totalRated, product.TotalRated)
+        );
       await _context.SaveChangesAsync();
 
       return NoContent();
@@ -85,16 +88,16 @@ namespace bochonok_server_side.Controllers
     // [HttpPut("{id}/Price")]
     // public async Task<IActionResult> ChangeProductPrice(int id, [FromBody] decimal newPrice)
     // {
-    //   var productDto = await _context.ProductList.FindAsync(id);
+    //   var productNoIdDto = await _context.ProductList.FindAsync(id);
     //
-    //   if (productDto == null)
+    //   if (productNoIdDto == null)
     //   {
     //     return NotFound();
     //   }
     //
-    //   var product = _mapper.Map<Product>(productDto);
+    //   var product = _mapper.Map<Product>(productNoIdDto);
     //   product.ChangePrice(newPrice);
-    //   var updatedProductDto = _mapper.Map<ProductDTO>(product);
+    //   var updatedProductDto = _mapper.Map<ProductTransferObject>(product);
     //   await _context.SaveChangesAsync();
     //
     //   return NoContent();

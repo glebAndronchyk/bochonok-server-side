@@ -15,7 +15,11 @@ public class Product
     public string CategoryId { get; private set; }
     public string SoldBy { get; private set; }
     public double Rating { get; private set; } = 0;
+    public double TotalRating { get; private set; } = 0;
     public int TotalRated { get; private set; } = 0;
+
+    public Product()
+    { }
 
     public Product(string id, string name, string description, string imageB64, string longDescription, string categoryId, List<Sale> sales, string soldBy, double price)
     {
@@ -51,7 +55,8 @@ public class Product
     public void ChangeRating(double ratedValue)
     {
         TotalRated++;
-        Rating = (Rating + ratedValue) / TotalRated;
+        TotalRating += ratedValue;
+        Rating = TotalRating / TotalRated;
     }
 
     public void ApplyNewSale(Sale sale)

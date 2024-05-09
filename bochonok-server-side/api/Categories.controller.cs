@@ -1,5 +1,6 @@
 using AutoMapper;
 using bochonok_server_side.database;
+using bochonok_server_side.dto;
 using bochonok_server_side.dto.category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,10 @@ namespace bochonok_server_side.Controllers
 
     // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryDTO categoryDto)
+    public async Task<ActionResult<CategoryDTO>> AddCategory(DescribedItemTransferObject categoryBody)
     {
-      categoryDto.id = new Guid().ToString();
+      var categoryDto = _mapper.Map<DescribedItemTransferObject, CategoryDTO>(categoryBody);
+      
       _context.Categories.Add(categoryDto);
       await _context.SaveChangesAsync();
 
