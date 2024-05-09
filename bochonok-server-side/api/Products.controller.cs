@@ -21,7 +21,7 @@ namespace bochonok_server_side.Controllers
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
     {
       var products = await _context.ProductList.ToListAsync();
-      return (_mapper.Map<List<ProductDTO>>(products));
+      return _mapper.Map<List<ProductDTO>>(products);
     }
 
     // GET: api/Products/5
