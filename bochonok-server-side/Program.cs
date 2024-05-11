@@ -1,5 +1,6 @@
 using bochonok_server_side.database;
 using bochonok_server_side.interfaces;
+using bochonok_server_side.mapper;
 using bochonok_server_side.model;
 using bochonok_server_side.Model.Image;
 using bochonok_server_side.services;
@@ -16,8 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
-builder.Services.AddScoped<IEntityService<CatalogItem>, EntityService<CatalogItem>>();
+// builder.Services.AddScoped<IEntityService<Category>, EntityService<Category>>();
+// builder.Services.AddScoped<IEntityService<CatalogItem>, EntityService<CatalogItem>>();
+MappingInjector.InjectMappings(builder.Services);
 
 // cors
 builder.Services.AddCors(options =>
