@@ -18,6 +18,7 @@ public class MappingInjector
       cfg.CreateMap<DescribedItemDTO, Product>().ReverseMap();
       cfg.CreateMap<SimplifiedProductDTO, Product>().ReverseMap();
       cfg.CreateMap<Sale, SaleDTO>().ReverseMap();
+      MapWithId(cfg.CreateMap<CategoryTransferObject, CategoryDTO>());
       MapWithId(cfg.CreateMap<DescribedItemTransferObject, CategoryDTO>());
       MapWithId(MapForMembers(cfg.CreateMap<ProductTransferObject, ProductDTO>(),
         new() { "salePrice", "rating", "totalRating", "totalRated" }, 0));

@@ -10,7 +10,7 @@ public class DataContext: DbContext
     public DataContext(DbContextOptions<DataContext> options): base(options)
     { }
 
-    public DbSet<CategoryDTO> Categories => Set<CategoryDTO>();
-    public DbSet<ProductDTO> ProductList => Set<ProductDTO>();
-    public DbSet<SaleDTO> Sales => Set<SaleDTO>();
+    public virtual DbSet<CategoryDTO> Categories { get; set; }
+    public virtual DbSet<ProductDTO> ProductList { get; set; }
+    public virtual DbSet<SaleDTO> Sales { get; set; }
 }

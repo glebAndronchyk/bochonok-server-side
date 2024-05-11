@@ -1,6 +1,5 @@
 using AutoMapper;
 using bochonok_server_side.database;
-using bochonok_server_side.dto;
 using bochonok_server_side.dto.category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,14 +17,16 @@ namespace bochonok_server_side.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
     {
-      return Ok(await _context.Categories.ToListAsync());
+      var categories = await _context.Categories.ToListAsync();
+      
+      return Ok(categories.OrderBy(category => category.isFavorite ? -1 : 1));
     }
 
     // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> AddCategory(DescribedItemTransferObject categoryBody)
+    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryTransferObject categoryBody)
     {
-      var categoryDto = _mapper.Map<DescribedItemTransferObject, CategoryDTO>(categoryBody);
+      var categoryDto = _mapper.Map<CategoryTransferObject, CategoryDTO>(categoryBody);
       
       _context.Categories.Add(categoryDto);
       await _context.SaveChangesAsync();
