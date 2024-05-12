@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-namespace bochonok_server_side.model.abstractions;
+namespace bochonok_server_side.dto;
 
-[PrimaryKey(nameof(id))]
-public class ItemWithId
+[PrimaryKey("id")]
+public class ItemWithIdDTO
 {
-    public Guid id { get; set; } = Guid.NewGuid();
+  public string id { get; set; }
 }

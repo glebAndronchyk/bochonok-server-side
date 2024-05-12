@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "vV9+XKJx3syKZf+KE+Ca2YfqEqfA2u+d/svAsN9LocgrNKy8U0j7GIjcHEjwoz7fVKxaI5KLdviesRFnOMtE/A==",
+  "dgSpecHash": "oQQ6qJ6hBFg0HbH7flv18mC3ZaPZhKH6ejdPpWhSJHoBmZQ8ifU+XTRkSgQ/JfIJnPaG6z/weLLQwN/57Io+Dg==",
   "success": true,
   "projectFilePath": "D:\\univ\\y2\\2s\\bochonok-server-side\\bochonok-server-side\\bochonok-server-side.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\cryac\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\cryac\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\cryac\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\cryac\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

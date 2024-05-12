@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace bochonok_server_side.model.encoding;
 
@@ -17,5 +18,25 @@ public class StringEncoder
     }
 
     return encodedStrings;
+  }
+
+  public static string GetCleanB64(string initial)
+  {
+    string pattern = @"data:[\w\/\+]+;base64,(.*)";
+        
+    var match = Regex.Match(initial, pattern);
+
+    if (match.Success)
+    {
+      return match.Groups[1].Value;
+    }
+  
+    return initial;
+  }
+  
+  public static string AddMIMEType(string base64Data, string mime)
+  {
+    // Combine data type and base64 data into a single string
+    return $"data:{mime};base64,{base64Data}";
   }
 }
