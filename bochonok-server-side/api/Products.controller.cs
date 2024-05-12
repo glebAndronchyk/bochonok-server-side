@@ -47,13 +47,13 @@ namespace bochonok_server_side.Controllers
     }
     
     [HttpPost]
-    public async Task<ActionResult<ProductDTO>> AddProduct(ProductTransferObject productBody)
+    public async Task<ActionResult<SimplifiedProductDTO>> AddProduct(ProductTransferObject productBody)
     {
       var productDto = _mapper.Map<ProductTransferObject, ProductDTO>(productBody);
       _context.ProductList.Add(productDto);
       await _context.SaveChangesAsync();
 
-      return Ok(productDto.categoryId);
+      return Ok(_mapper.Map<ProductDTO, SimplifiedProductDTO>(productDto));
     }
 
     [HttpPut("{id}/Rating")]
