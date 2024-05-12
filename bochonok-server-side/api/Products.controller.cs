@@ -16,15 +16,13 @@ namespace bochonok_server_side.Controllers
       :base(context, mapper)
     { }
 
-    // GET: api/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProducts()
     {
       var products = await _context.ProductList.ToListAsync();
-      return products;
+      return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
 
-    // GET: api/Products/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(string id)
     {
@@ -38,7 +36,6 @@ namespace bochonok_server_side.Controllers
       return Ok(product);
     }
 
-    // GET: api/Products/Category/5
     [HttpGet("Category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProductsByCategory(string categoryId)
     {
@@ -46,7 +43,7 @@ namespace bochonok_server_side.Controllers
         .Where(p => p.categoryId == categoryId)
         .ToListAsync();
 
-      return Ok(products);
+      return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
     
     [HttpPost]
@@ -56,10 +53,9 @@ namespace bochonok_server_side.Controllers
       _context.ProductList.Add(productDto);
       await _context.SaveChangesAsync();
 
-      return Ok();
+      return Ok(productDto.categoryId);
     }
 
-    // PUT: api/Products/5/Rating
     [HttpPut("{id}/Rating")]
     public async Task<IActionResult> ChangeProductRating(string id, [FromBody] double newRating)
     {
