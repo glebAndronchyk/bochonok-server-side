@@ -22,6 +22,13 @@ namespace bochonok_server_side.Controllers
       var products = await _context.ProductList.ToListAsync();
       return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
+    
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetFilteredProducts([FromBody] string filter)
+    {
+      var products = await _context.ProductList.ToListAsync();
+      return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
+    }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(string id)
