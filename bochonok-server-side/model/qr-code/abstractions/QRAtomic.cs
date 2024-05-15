@@ -1,5 +1,6 @@
 
 using bochonok_server_side.model;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace bochonok_server_side.Model.Image.abstractions;
@@ -32,6 +33,29 @@ public abstract class QRAtomic : ICloneable
   public byte[,] GetBytes()
   {
     return _bytesMatrix.GetBytes();
+  }
+
+  public string ToBase64String()
+  {
+    var rgba = GetRgba32Bytes();
+    var size = (int)Math.Sqrt(rgba.Length);
+    using (var image = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(rgba, size, size))
+    {
+      return image.ToBase64String(PngFormat.Instance);
+    }
+  }
+
+  public byte[] GetFlattenBytes()
+  {
+    var rgba = GetRgba32Bytes();
+    var size = (int)Math.Sqrt(rgba.Length);
+    using (var image = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(rgba, size, size))
+    {
+      var bytes = new byte[image.Height * image.Width * image.PixelType.BitsPerPixel / 8];
+      image.CopyPixelDataTo(bytes);
+      
+      return bytes;
+    }
   }
 
   public Rgba32[] GetRgba32Bytes()

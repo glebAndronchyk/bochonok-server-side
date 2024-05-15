@@ -31,7 +31,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .ToList();
     }
 
-    public void Build()
+    public QRCode Build()
     {
         var  builder = new QRBuilder(this);
         var  encodedString = Encode();
@@ -52,6 +52,8 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .ApplyMask()
             .RetrieveItems();
         SetItems(buildedQR);
+
+        return this;
     }
 
     private string Encode() => QRDataEncoder.EncodeCodewords(_encodeString, EEncodingMode.BYTE, EVersion.V2);

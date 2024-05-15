@@ -1,6 +1,6 @@
 namespace bochonok_server_side.dto.category;
 
-public class CategoryTransferObject : DescribedItemTransferObject
+public class CategoryRequestDTO : DescribedItemRequestDTO
 {
     public bool isFavorite { get; set; }
 }

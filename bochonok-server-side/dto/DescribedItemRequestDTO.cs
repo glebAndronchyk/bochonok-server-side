@@ -1,6 +1,6 @@
 namespace bochonok_server_side.dto;
 
-public class DescribedItemTransferObject
+public class DescribedItemRequestDTO
 {
     public string title { get; set; }
     public string description { get; set; }

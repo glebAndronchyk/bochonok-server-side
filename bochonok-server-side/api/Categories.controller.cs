@@ -31,9 +31,9 @@ namespace bochonok_server_side.Controllers
 
     // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryTransferObject categoryBody)
+    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO categoryBody)
     {
-      var categoryDto = _mapper.Map<CategoryTransferObject, CategoryDTO>(categoryBody);
+      var categoryDto = _mapper.Map<CategoryRequestDTO, CategoryDTO>(categoryBody);
       categoryDto.imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64);
       
       _context.Categories.Add(categoryDto);

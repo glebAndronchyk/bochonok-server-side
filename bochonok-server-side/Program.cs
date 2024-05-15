@@ -48,8 +48,8 @@ test.Build();
 var bytes = test.GetRgba32Bytes();
 // Console.WriteLine(bytes.Length);
 using (var image = Image.LoadPixelData<Rgba32>(bytes, (int)Math.Sqrt(bytes.GetLength(0)), (int)Math.Sqrt(bytes.GetLength(0))))
-{ 
-   // image.Mutate((x) => x.Rotate(90));
+{
+    // image.Mutate((x) => x.Rotate(90));
    image.Save("qrcode-format1.png", new PngEncoder());
 }
 
