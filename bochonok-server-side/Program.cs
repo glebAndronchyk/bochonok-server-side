@@ -1,9 +1,6 @@
 using bochonok_server_side.database;
-using bochonok_server_side.interfaces;
 using bochonok_server_side.mapper;
-using bochonok_server_side.model;
 using bochonok_server_side.Model.Image;
-using bochonok_server_side.services;
 using Microsoft.EntityFrameworkCore;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;

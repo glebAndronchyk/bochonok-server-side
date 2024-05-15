@@ -3,6 +3,7 @@ using bochonok_server_side.dto;
 using bochonok_server_side.dto.category;
 using bochonok_server_side.dto.product;
 using bochonok_server_side.dto.sale;
+using bochonok_server_side.model.encoding;
 using bochonok_server_side.model.product_list;
 using bochonok_server_side.model.sale;
 
@@ -50,7 +51,7 @@ public class MappingInjector
       return opt.ForMember(
         "id",
         opt => opt.MapFrom(
-          s => Guid.NewGuid().ToString())
+          s => StringEncoder.GenerateRandom(8))
         );
     }
     else

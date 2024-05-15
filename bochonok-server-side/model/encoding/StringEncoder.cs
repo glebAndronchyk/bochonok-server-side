@@ -33,7 +33,19 @@ public class StringEncoder
   
     return initial;
   }
-  
+
+  public static string GenerateRandom(int length)
+  {
+    StringBuilder sb = new StringBuilder();
+    int numGuidsToConcat = (length - 1) / 32 + 1;
+    for(int i = 1; i <= numGuidsToConcat; i++)
+    {
+      sb.Append(Guid.NewGuid().ToString("N"));
+    }
+
+    return sb.ToString(0, length);
+  }
+
   public static string AddMIMEType(string base64Data, string mime)
   {
     // Combine data type and base64 data into a single string
