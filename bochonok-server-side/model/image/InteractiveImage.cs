@@ -13,10 +13,20 @@ public class InteractiveImage: ImageBase
     public ImageBase ApplyMask(Rgba32[] mask)
     {
         var grayscaleImage = ToGrayScale();
-
-        for (int i = 0; i < UPPER; i++)
+        
+        for (int i = 0; i < Img.Width; i++)
         {
-            
+            for (int j = 0; j < Img.Height; j++)
+            {
+                var pixel = grayscaleImage.Img[i, j];
+                
+                if (pixel.R < 128)
+                {
+                    grayscaleImage.Img[i, j] = mask[(i * Img.Width + j) % mask.Length];
+                }
+            }
         }
+
+        return new ImageBase(grayscaleImage.ToBase64String());
     }
 }

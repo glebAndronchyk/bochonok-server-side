@@ -36,7 +36,7 @@ public class ImageBase
 
     public byte[] GetByteArray() => ByteArray;
 
-    public string GetB64() => Convert.ToBase64String(ByteArray);
+    public string ToBase64String() => Convert.ToBase64String(ByteArray);
 
     private static byte[] GetByteArrayFromImage(Image<Rgba32> img)
     {
