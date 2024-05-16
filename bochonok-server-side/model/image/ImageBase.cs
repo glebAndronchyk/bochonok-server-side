@@ -5,8 +5,8 @@ namespace bochonok_server_side.Model.Image;
 
 public class ImageBase
 {
+    public readonly Image<Rgba32> Img;
     protected readonly byte[] ByteArray;
-    protected readonly Image<Rgba32> Img;
     
     public ImageBase(string src)
     {
@@ -22,7 +22,7 @@ public class ImageBase
     
     public static byte[] ByteArrayFromSrc(string src)
     {
-        SixLabors.ImageSharp.Image<Rgba32> img = SixLabors.ImageSharp.Image.Load<Rgba32>(src);
+        Image<Rgba32> img = SixLabors.ImageSharp.Image.Load<Rgba32>(src);
         return GetByteArrayFromImage(img);
     }
 
@@ -34,16 +34,11 @@ public class ImageBase
         return new ImageBase(GetByteArrayFromImage(grayscaleImage));
     }
 
-    public string Save()
-    {
-        return "";
-    }
-
     public byte[] GetByteArray() => ByteArray;
 
     public string GetB64() => Convert.ToBase64String(ByteArray);
 
-    private static byte[] GetByteArrayFromImage(SixLabors.ImageSharp.Image<Rgba32> img)
+    private static byte[] GetByteArrayFromImage(Image<Rgba32> img)
     {
         var byteArray = new byte[img.Width * img.Height * Unsafe.SizeOf<Rgba32>()];
         img.CopyPixelDataTo(byteArray);

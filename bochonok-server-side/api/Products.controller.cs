@@ -1,10 +1,10 @@
 using AutoMapper;
 using bochonok_server_side.database;
 using bochonok_server_side.dto.product;
+using bochonok_server_side.Model.Image;
 using bochonok_server_side.model.product_list;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace bochonok_server_side.Controllers
 {
@@ -19,6 +19,7 @@ namespace bochonok_server_side.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProducts()
     {
+      var catalogImage = new InteractiveImage("123").ApplyMask();
       var products = await _context.ProductList.ToListAsync();
       return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
