@@ -19,13 +19,18 @@ namespace bochonok_server_side.Controllers
     {
       try
       {
+        var catalogImage = _context.Categories.Find(body.categoryId);
         var qr = new QRCode(body.url).Build();
         var qrB64 = qr.ToBase64String();
+        var maskedCatalogImageB64 = new InteractiveImage(catalogImage.imageB64)
+          .ApplyMask(qr.GetRgba32Bytes())
+          .ToBase64String();
+
         
         return Ok(new QRCodeDTO
         {
           defaultQR = qrB64,
-          categoryQR = null
+          categoryQR = maskedCatalogImageB64
         });
       }
       catch

@@ -19,7 +19,6 @@ namespace bochonok_server_side.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProducts()
     {
-      var catalogImage = new InteractiveImage("123").ApplyMask();
       var products = await _context.ProductList.ToListAsync();
       return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
