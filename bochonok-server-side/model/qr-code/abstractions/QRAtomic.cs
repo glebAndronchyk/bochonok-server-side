@@ -41,21 +41,7 @@ public abstract class QRAtomic : ICloneable
     var size = (int)Math.Sqrt(rgba.Length);
     using (var image = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(rgba, size, size))
     {
-      image.Save("qqqq.png", new PngEncoder());
       return image.ToBase64String(PngFormat.Instance);
-    }
-  }
-
-  public byte[] GetFlattenBytes()
-  {
-    var rgba = GetRgba32Bytes();
-    var size = (int)Math.Sqrt(rgba.Length);
-    using (var image = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(rgba, size, size))
-    {
-      var bytes = new byte[image.Height * image.Width * image.PixelType.BitsPerPixel / 8];
-      image.CopyPixelDataTo(bytes);
-      
-      return bytes;
     }
   }
 
