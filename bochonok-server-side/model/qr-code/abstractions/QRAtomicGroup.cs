@@ -29,7 +29,6 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
     return _items;
   }
 
-  // Rework this
   public FlattenGroup Flatten()
   {
     int resultWidth = _items.Sum(row => row.Any() ? row.Max(item => item.Size.Width) : 0);

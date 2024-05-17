@@ -6,11 +6,13 @@ namespace bochonok_server_side.factories;
 
 public class QRAtomicsFactory
 {
-  public QRAtomicsFactory()
-  { }
-  
-  public QRAtomic CreateQrModule(byte moduleType, QRSize? size = null)
+  public static QRAtomic CreateQrModule(byte moduleType, QRSize? size = null)
   {
     return new QRModule(moduleType, size);
+  }
+
+  public static List<QRAtomic> CreateQrLine(int length)
+  {
+    return Enumerable.Range(0, length).Select(_ => CreateQrModule((byte)0)).ToList();
   }
 }
