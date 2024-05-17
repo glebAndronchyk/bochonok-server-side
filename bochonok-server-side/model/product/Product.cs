@@ -47,7 +47,7 @@ public class Product
         Price = p.Price;
         LongDescription = p.LongDescription;
         CategoryId = p.CategoryId;
-        Rating = p.Rating;
+        Rating = double.Parse(p.Rating.ToString("N2"));
 
         ApplySales();
     }
@@ -56,7 +56,7 @@ public class Product
     {
         TotalRated++;
         TotalRating += ratedValue;
-        Rating = TotalRating / TotalRated;
+        Rating = double.Parse((TotalRating / TotalRated).ToString("N2"));
     }
 
     public void ApplyNewSale(Sale sale)
