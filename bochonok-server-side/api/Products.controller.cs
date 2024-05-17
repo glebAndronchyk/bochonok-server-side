@@ -56,8 +56,8 @@ namespace bochonok_server_side.Controllers
       return Ok(_mapper.Map<ProductDTO, SimplifiedProductDTO>(productDto));
     }
 
-    [HttpPut("{id}/Rating")]
-    public async Task<IActionResult> ChangeProductRating(string id, [FromBody] double newRating)
+    [HttpPost("{id}/Rating")]
+    public async Task<ActionResult<ProductDTO>> ChangeProductRating(string id, [FromBody] RatingChangeDTO body)
     {
       var productDto = await _context.ProductList.FindAsync(id);
 
@@ -67,7 +67,7 @@ namespace bochonok_server_side.Controllers
       }
 
       var product = _mapper.Map<ProductDTO, Product>(productDto);
-      product.ChangeRating(newRating);
+      product.ChangeRating(body.rating);
 
       await _context.ProductList.Where(p => p.id == id)
         .ExecuteUpdateAsync(updates =>
@@ -77,7 +77,7 @@ namespace bochonok_server_side.Controllers
         );
       await _context.SaveChangesAsync();
 
-      return NoContent();
+      return Ok(_mapper.Map<Product, RatingDTO>(product));
     }
 
     // PUT: api/Products/5/Price
