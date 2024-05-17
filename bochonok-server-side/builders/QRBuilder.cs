@@ -1,3 +1,4 @@
+using bochonok_server_side.factories;
 using bochonok_server_side.Model.Image;
 using bochonok_server_side.Model.Image.abstractions;
 using bochonok_server_side.Model.Image.enums;
@@ -294,5 +295,27 @@ public class QRBuilder
     }
     
     return new (nextX, nextY);
+  }
+
+  public QRBuilder AddQrSafeZone()
+  {
+    var safeAreaLength = 2;
+    
+    foreach (var row in _items)
+    {
+      for (int i = 0; i < safeAreaLength; i++)
+      {
+        row.Insert(0, QRAtomicsFactory.CreateQrModule(0));
+        row.Add(QRAtomicsFactory.CreateQrModule(0));
+      }
+    }
+    
+    for (int i = 0; i < safeAreaLength; i++)
+    {
+      _items.Insert(0, QRAtomicsFactory.CreateQrLine(_items.Count));
+      _items.Add(QRAtomicsFactory.CreateQrLine(_items.Count));
+    }
+    
+    return this;
   }
 }
