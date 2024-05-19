@@ -1,12 +1,13 @@
 using bochonok_server_side.model;
-using bochonok_server_side.Model.Image.abstractions;
 using bochonok_server_side.Model.Image.interfaces;
+using bochonok_server_side.model.qr_code;
+using bochonok_server_side.model.qr_code.abstractions;
 
 namespace bochonok_server_side.Model.Image;
 
 public class QRAlignmentPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 {
-  public QRAlignmentPattern() : base(new QRSize(5, 5, 5))
+  public QRAlignmentPattern() : base(new ScalableSize(5, 5, 5))
   { }
 
   public IQRPattern Build()
@@ -16,11 +17,8 @@ public class QRAlignmentPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 
     return this;
   }
-  
-  public QRSize GetSize()
-  {
-    return Size;
-  }
+
+  public ScalableSize GetSize() => Size;
   
   // TODO: add pattern class and separate this pattern from QRFInderPatter in order to optimize memory usage
   public List<List<QRAtomic>> BuildLayout()

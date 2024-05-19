@@ -18,10 +18,6 @@ public class Point
     X = pCopy.X;
     Y = pCopy.Y;
   }
-
-  // TODO: deprecated
-  public int GetX() => X;
-  public int GetY() => Y;
   
   public override string ToString()
   {

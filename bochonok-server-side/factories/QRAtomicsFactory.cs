@@ -1,12 +1,11 @@
-using bochonok_server_side.model;
-using bochonok_server_side.Model.Image;
-using bochonok_server_side.Model.Image.abstractions;
+using bochonok_server_side.model.qr_code;
+using bochonok_server_side.model.qr_code.abstractions;
 
 namespace bochonok_server_side.factories;
 
 public class QRAtomicsFactory
 {
-  public static QRAtomic CreateQrModule(byte moduleType, QRSize? size = null)
+  public static QRAtomic CreateQrModule(byte moduleType, ScalableSize? size = null)
   {
     return new QRModule(moduleType, size);
   }

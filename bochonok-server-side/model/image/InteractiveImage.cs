@@ -1,4 +1,4 @@
-﻿using bochonok_server_side.model.utility_classes;
+﻿using bochonok_server_side.model.utility_classes.array_utilities;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace bochonok_server_side.Model.Image;

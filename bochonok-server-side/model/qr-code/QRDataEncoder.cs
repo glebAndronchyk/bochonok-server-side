@@ -12,8 +12,6 @@ public class QRDataEncoder
   
   public static string EncodeCodewords(string str, EEncodingMode mode, EVersion version)
   {
-    // TODO: unhardcode
-    // this is hardcoded value - refer here to check every possible https://www.thonky.com/qr-code-tutorial/error-correction-table
     int maxCodewords = 34;
     
     if (str.Length > maxCodewords)
@@ -36,15 +34,10 @@ public class QRDataEncoder
     AddErrorCorrectionBytes(ref result, maxBits);
     // AddSaveBits(ref result);
     
-    // TODO: this should be described
     return result + "0000000";
   }
 
-  private static void EncodeEntryString(ref string data, string inputString)
-  {
-    data += String.Join("", StringEncoder.ByteModeEncode(inputString).ToArray());
-  }
-
+  private static void EncodeEntryString(ref string data, string inputString) => data += String.Join("", StringEncoder.ByteModeEncode(inputString).ToArray());
   private static void AddCharacterIndicator(ref string data, string str, byte maxBits)
   {
     string modeIndicator = Pad(Convert.ToString(str.Length, 2), maxBits);
@@ -87,7 +80,6 @@ public class QRDataEncoder
     }
     else if (deficit > 0)
     {
-      // Add only the number of 0s needed to reach the required number of bits
       data += new string('0', deficit);
     }
   }

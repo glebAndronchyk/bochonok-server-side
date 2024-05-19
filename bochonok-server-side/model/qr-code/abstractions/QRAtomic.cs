@@ -1,45 +1,36 @@
-
-using bochonok_server_side.model;
+using bochonok_server_side.model.utility_classes.Mat;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace bochonok_server_side.Model.Image.abstractions;
+namespace bochonok_server_side.model.qr_code.abstractions;
 
 public abstract class QRAtomic : ICloneable
 {
-  public QRSize Size;
+  public ScalableSize Size;
   
-  protected ByteMatrix _bytesMatrix;
+  protected Mat<byte> _bytesMatrix;
   
-  protected QRAtomic(QRSize? qrSize)
+  protected QRAtomic(ScalableSize? scalableSize)
   {
-    if (qrSize == null)
-    {
-      Size = new(5, 5);
-    }
-    else
-    {
-      Size = qrSize;
-    }
-    
-    _bytesMatrix = new ByteMatrix(Size.Width, Size.Height);
+    Size = scalableSize ?? new(5, 5);
+    _bytesMatrix = new (Size.Width, Size.Height, 0);
   }
   
-  public ByteMatrix GetMatrix()
+  public Mat<byte> GetMatrix()
   {
     return _bytesMatrix;
   }
 
   public byte[,] GetBytes()
   {
-    return _bytesMatrix.GetBytes();
+    return _bytesMatrix.GetMatrix();
   }
 
   public string ToBase64String()
   {
     var rgba = GetRgba32Bytes();
     var size = (int)Math.Sqrt(rgba.Length);
-    using (var image = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(rgba, size, size))
+    using (var image = Image.LoadPixelData<Rgba32>(rgba, size, size))
     {
       return image.ToBase64String(PngFormat.Instance);
     }

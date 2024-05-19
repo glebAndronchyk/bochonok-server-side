@@ -1,8 +1,8 @@
 using bochonok_server_side.factories;
-using bochonok_server_side.Model.Image;
-using bochonok_server_side.Model.Image.abstractions;
 using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.Model.Image.interfaces;
+using bochonok_server_side.model.qr_code;
+using bochonok_server_side.model.qr_code.abstractions;
 using bochonok_server_side.model.utility_classes;
 using Point = bochonok_server_side.model.utility_classes.Point;
 
@@ -27,15 +27,15 @@ public class QRBuilder
   {
     pattern.Build();
     var patternSize = pattern.GetSize().GetDividedSize();
-    var x = start.GetX();
-    var y = start.GetY();
+    var x = start.X;
+    var y = start.Y;
     var endPoint = new Point(x + patternSize.Width, y + patternSize.Height);
     
     _maskSafeZones.Add(new DescribedArea(start, endPoint, name));
     
-    for (int i = x; i < endPoint.GetX(); i++)
+    for (int i = x; i < endPoint.X; i++)
     {
-      for (int j = y; j < endPoint.GetY(); j++)
+      for (int j = y; j < endPoint.Y; j++)
       {
         _items[i][j] = (QRAtomic)pattern.GetAtomicItems()[i - x][j - y].Clone();
       }
@@ -107,7 +107,7 @@ public class QRBuilder
       _maskSafeZones.Add(new DescribedArea(pos, pos));
     }
 
-    _items[pos.GetX()][pos.GetY()] = module;
+    _items[pos.X][pos.Y] = module;
 
     return this;
   }
@@ -179,7 +179,6 @@ public class QRBuilder
 
   private void PlaceBitsInSequence(string zeroToSix, Point verticalStart, Point horizontalStart, Point increasers, bool ignoreModuleSkip = false)
   {
-    // TODO: point and size same signature
     var verticalCopy = new Point(verticalStart);
     var horizontalCopy = new Point(horizontalStart);
     var bitsContainer = new BitsContainer(zeroToSix, false);
@@ -235,8 +234,8 @@ public class QRBuilder
         {
           var topLeft = zone.TopLeftCorner;
           var bottomRight = zone.BottomRightCorner;
-          var isXSafe = i >= topLeft.GetX() && i <= bottomRight.GetX();
-          var isYSafe = j >= topLeft.GetY() && j <= bottomRight.GetY();
+          var isXSafe = i >= topLeft.X && i <= bottomRight.X;
+          var isYSafe = j >= topLeft.Y && j <= bottomRight.Y;
             
           return isXSafe && isYSafe;
         });
@@ -270,7 +269,7 @@ public class QRBuilder
         return false;
       }
       
-      _items[pos.GetY()][pos.GetX()] = GetNewModule(bitsContainer);
+      _items[pos.Y][pos.X] = GetNewModule(bitsContainer);
     }
 
     return true;
