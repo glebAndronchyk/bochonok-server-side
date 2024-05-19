@@ -46,7 +46,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddFindersSafeZone()
             .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9), "alignment")
             .AddTiming(9)
-            .AddFormatInfo("110100101110110")
+            .AddFormatInfo("111011111000100")
             .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
             .ApplyMask()

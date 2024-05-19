@@ -14,14 +14,12 @@ namespace bochonok_server_side.Controllers
     public CategoriesController(DataContext context, IMapper mapper) : base(context, mapper)
     { }
 
-    // GET: api/Categories
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
     {
       var categories = await _context.Categories.ToListAsync();
       var withMIMECategories = categories.Select(c =>
       {
-        // TODO: resolve mime type actions
         c.imageB64 = StringEncoder.AddMIMEType(c.imageB64, "image/png");
         return c;
       });
@@ -42,7 +40,6 @@ namespace bochonok_server_side.Controllers
       return CreatedAtAction(nameof(GetCategory), new { categoryDto.id }, categoryDto);
     }
 
-    // GET: api/Categories/5
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoryDTO>> GetCategory(string id)
     {

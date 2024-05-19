@@ -118,6 +118,7 @@ public class QRBuilder
     int y = _qrCtx.Size.Height;
     var direction = EFillDirection.Upwards;
     var bitsContainer = new BitsContainer(bits, true);
+    var verticalTimingPosition = 8;
     
     _items[x][y - 1] = GetNewModule(bitsContainer);
     
@@ -132,7 +133,7 @@ public class QRBuilder
           break;
         }
 
-        x -= 2;
+        x -= x == verticalTimingPosition ? 3 : 2;
         direction = direction == EFillDirection.Upwards ?
             EFillDirection.Downwards :
             EFillDirection.Upwards;
@@ -217,14 +218,14 @@ public class QRBuilder
 
   public QRBuilder ApplyMask()
   {
-    /* This is level 7 mask condition. In order to create normally
+    /* This is level 0 mask condition. In order to create normally
      working qr code, you should calculate penalty for every 8 masks
      and then choose one with lowest total penalty. Please refer to 
      https://www.thonky.com/qr-code-tutorial/data-masking
      and
      https://www.thonky.com/qr-code-tutorial/mask-patterns
     */
-    Func<Point, bool> maskCondition = p => (((p.GetX() + p.GetY()) % 2) + ((p.GetX() * p.GetY()) % 3))  % 2 == 0;
+    Func<Point, bool> maskCondition = p => (p.X + p.Y)  % 2 == 0;
 
     for (int i = 0; i < _items.Count; i++)
     {

@@ -1,7 +1,7 @@
 using bochonok_server_side.model.encoding;
 using bochonok_server_side.Model.Image.enums;
 using Newtonsoft.Json.Linq;
-using STH1123.ReedSolomon;
+using ZXing.Common.ReedSolomon;
 
 namespace bochonok_server_side.Model.Image;
 
@@ -9,7 +9,6 @@ public class QRDataEncoder
 {
   private static readonly string _bin236 = "11101100";
   private static readonly string _bin17 = "00010001";
-  private static readonly ReedSolomonEncoder _rsEncoder = new (new GenericGF(285, 256, 0));
   
   public static string EncodeCodewords(string str, EEncodingMode mode, EVersion version)
   {
@@ -34,10 +33,11 @@ public class QRDataEncoder
     AddTerminatorBits(ref result, maxCodewords);
     PadToMultipleOfEight(ref result);
     AddPadBytes(ref result, maxCodewords);
-    AddErrorCorrectionBytes(ref result, str, maxBits);
-
+    AddErrorCorrectionBytes(ref result, maxBits);
+    // AddSaveBits(ref result);
+    
     // TODO: this should be described
-    return result + "00000000";
+    return result + "0000000";
   }
 
   private static void EncodeEntryString(ref string data, string inputString)
@@ -113,28 +113,18 @@ public class QRDataEncoder
     }
   }
   
-  // TODO: check, there maybe a problem with what being passed to the method, maybe i should use only previously achieved data
-  private static void AddErrorCorrectionBytes(ref string data, string initialMessage, byte maxBits)
+  private static void AddErrorCorrectionBytes(ref string data, byte maxBits)
   {
-    int errorCorrectionCodewordsAmount = 10;
-    
-    int[] intParts = initialMessage
-      .ToCharArray()
-      .Select(part => (int)Convert.ToByte(part))
-      .Concat(Enumerable
-        .Range(0, errorCorrectionCodewordsAmount)
-        .Select(_ => 0x00))
+    ReedSolomonEncoder encoder = new ReedSolomonEncoder(GenericGF.QR_CODE_FIELD_256);
+    var intData = StringEncoder.SplitInParts(data, maxBits)
+      .Select(v => Convert.ToInt32(v, 2))
+      .Concat(
+        Enumerable.Range(0, 10)
+          .Select(_ => 0))
       .ToArray();
     
-    // 10 -is hardcoded value related to 2-L row of https://www.thonky.com/qr-code-tutorial/error-correction-table
-    // TODO: here can be a mistake, because intParts not in hex format
-    _rsEncoder.Encode(intParts, errorCorrectionCodewordsAmount);
+    encoder.encode(intData, 10);
     
-    var errorCorrectionBinary = intParts
-      .Skip(initialMessage.Length)
-      .Select(part => Pad(Convert.ToString(part, 2), maxBits))
-      .ToArray();
-    
-    data += String.Join("", errorCorrectionBinary);
+    data = String.Join("", intData.Select(v => Pad(Convert.ToString(v, 2), maxBits)));
   }
 }
