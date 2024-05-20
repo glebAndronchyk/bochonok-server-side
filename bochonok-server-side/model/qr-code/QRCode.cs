@@ -4,7 +4,6 @@ using bochonok_server_side.Model.Image;
 using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.model.qr_code.abstractions;
 using bochonok_server_side.model.qr_code.enums;
-using Point = bochonok_server_side.model.utility_classes.Point;
 
 namespace bochonok_server_side.model.qr_code;
 

@@ -1,15 +1,14 @@
 using AutoMapper;
-using bochonok_server_side.database;
-using bochonok_server_side.dto.product;
-using bochonok_server_side.Model.Image;
-using bochonok_server_side.model.product_list;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using bochonok_server_side.database;
+using bochonok_server_side.dto.product;
+using bochonok_server_side.model.product_list;
 
 namespace bochonok_server_side.Controllers
 {
   [ApiController]
-  [Route("api/[controller]")]
+  [Route("controllers/[controller]")]
   public class ProductsController : BaseController.BaseController
   {
     public ProductsController(DataContext context, IMapper mapper)
@@ -80,7 +79,7 @@ namespace bochonok_server_side.Controllers
       return Ok(_mapper.Map<Product, RatingDTO>(product));
     }
 
-    // PUT: api/Products/5/Price
+    // PUT: controllers/Products/5/Price
     // [HttpPut("{id}/Price")]
     // public async Task<IActionResult> ChangeProductPrice(int id, [FromBody] decimal newPrice)
     // {

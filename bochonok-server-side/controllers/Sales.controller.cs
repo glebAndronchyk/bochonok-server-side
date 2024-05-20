@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 namespace bochonok_server_side.Controllers;
 
   [ApiController]
-  [Route("api/[controller]")]
+  [Route("controllers/[controller]")]
   public class SalesController : BaseController.BaseController
   {
     public SalesController(DataContext context, IMapper mapper) : base(context, mapper)
     { }
 
-    // GET: api/Sales
+    // GET: controllers/Sales
     [HttpGet]
     public async Task<ActionResult<IEnumerable<SaleDTO>>> GetSales()
     {
@@ -22,7 +22,7 @@ namespace bochonok_server_side.Controllers;
       return _mapper.Map<List<SaleDTO>>(sales);
     }
 
-    // POST: api/Sales
+    // POST: controllers/Sales
     [HttpPost]
     public async Task<ActionResult<SaleDTO>> AddSale(SaleDTO saleDto)
     {
@@ -34,7 +34,7 @@ namespace bochonok_server_side.Controllers;
       return CreatedAtAction(nameof(GetSale), new { sale.id }, _mapper.Map<SaleDTO>(sale));
     }
 
-    // GET: api/Sales/5
+    // GET: controllers/Sales/5
     [HttpGet("{id}")]
     public async Task<ActionResult<SaleDTO>> GetSale(string id)
     {
