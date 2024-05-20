@@ -103,6 +103,8 @@ public class QRDataEncoder
 
   private static void AddErrorCorrectionBytes(ref string data, byte maxBits, int ecc)
   {
+    // i'm too stupid to implement this by myself :)
+    
     ReedSolomonEncoder encoder = new ReedSolomonEncoder(GenericGF.QR_CODE_FIELD_256);
     var intData = StringEncoder.SplitInParts(data, maxBits)
       .Select(v => Convert.ToInt32(v, 2))

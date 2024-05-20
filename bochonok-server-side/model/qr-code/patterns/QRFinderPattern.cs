@@ -20,6 +20,8 @@ public class QRFinderPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 
   public ScalableSize GetSize() => Size;
   
+  // OMG this is so bad :(
+  
   public List<List<QRAtomic>> BuildLayout()
   {
     return new List<List<QRAtomic>>

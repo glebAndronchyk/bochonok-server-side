@@ -304,7 +304,7 @@ public class QRBuilder
     return new (nextX, nextY);
   }
 
-  public QRBuilder AddQrSafeZone()
+  public QRBuilder AddQrQuiteZone()
   {
     var safeAreaLength = 2;
     

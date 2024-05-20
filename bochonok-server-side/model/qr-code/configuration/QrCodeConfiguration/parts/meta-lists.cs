@@ -4,6 +4,8 @@ using Point = bochonok_server_side.model.utility_classes.Point;
 
 namespace bochonok_server_side.model.qr_code.QrCodeConfiguration;
 
+// This is the most stupid shit i've ever seen.
+
 public partial class QRCodeConfiguration
 {
     public static readonly Dictionary<EEncodingMode, QREncodingMeta> Encodings = new()

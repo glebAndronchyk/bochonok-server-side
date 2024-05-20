@@ -37,7 +37,6 @@ public class QRCode : QRAtomicGroup<QRAtomic>
         var  builder = new QRBuilder(_cfg, GetAtomicItems());
         var  encodedString = Encode();
         
-        // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
         var buildedQR = 
             builder
             .AddPattern(new QRFinderPattern(), _cfg.PatternsPosition[EPlacement.TopLeft], "finder")
@@ -47,10 +46,14 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .AddModule(new QRModule(EModuleType.Black), _cfg.PatternsPosition[EPlacement.BottomLeftOffset], true)
             .AddFindersSafeZone()
             .AddTiming()
+            // This part of code is incorrect. Firstly i should determine best mask then i should proceed with format info
+            // so let it be as it is.... for now... maybe one day :D.
+            // about format info - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
             .AddFormatInfo("111011111000100")
             .AddIterative(encodedString)
             .ApplyMask()
-            .AddQrSafeZone()
+            //
+            .AddQrQuiteZone()
             .RetrieveItems();
         SetItems(buildedQR);
 
