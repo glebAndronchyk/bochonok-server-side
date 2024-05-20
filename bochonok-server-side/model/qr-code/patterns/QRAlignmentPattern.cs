@@ -1,12 +1,13 @@
-using bochonok_server_side.model;
-using bochonok_server_side.Model.Image.abstractions;
 using bochonok_server_side.Model.Image.interfaces;
+using bochonok_server_side.model.qr_code;
+using bochonok_server_side.model.qr_code.abstractions;
+using bochonok_server_side.model.qr_code.enums;
 
 namespace bochonok_server_side.Model.Image;
 
 public class QRAlignmentPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 {
-  public QRAlignmentPattern() : base(new QRSize(5, 5, 5))
+  public QRAlignmentPattern() : base(new ScalableSize(5, 5, 5))
   { }
 
   public IQRPattern Build()
@@ -16,22 +17,18 @@ public class QRAlignmentPattern : QRAtomicGroup<QRAtomic>, IQRPattern
 
     return this;
   }
+
+  public ScalableSize GetSize() => Size;
   
-  public QRSize GetSize()
-  {
-    return Size;
-  }
-  
-  // TODO: add pattern class and separate this pattern from QRFInderPatter in order to optimize memory usage
   public List<List<QRAtomic>> BuildLayout()
   {
     return new List<List<QRAtomic>>
     {
-      new () { new QRModule(1), new QRModule(1), new QRModule(1), new QRModule(1), new QRModule(1) },
-      new () { new QRModule(1), new QRModule(0), new QRModule(0), new QRModule(0), new QRModule(1) },
-      new () { new QRModule(1), new QRModule(0), new QRModule(1), new QRModule(0), new QRModule(1) },
-      new () { new QRModule(1), new QRModule(0), new QRModule(0), new QRModule(0), new QRModule(1) },
-      new () { new QRModule(1), new QRModule(1), new QRModule(1), new QRModule(1), new QRModule(1) }
+      new () { new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black) },
+      new () { new QRModule(EModuleType.Black), new QRModule(EModuleType.White), new QRModule(EModuleType.White), new QRModule(EModuleType.White), new QRModule(EModuleType.Black) },
+      new () { new QRModule(EModuleType.Black), new QRModule(EModuleType.White), new QRModule(EModuleType.Black), new QRModule(EModuleType.White), new QRModule(EModuleType.Black) },
+      new () { new QRModule(EModuleType.Black), new QRModule(EModuleType.White), new QRModule(EModuleType.White), new QRModule(EModuleType.White), new QRModule(EModuleType.Black) },
+      new () { new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black), new QRModule(EModuleType.Black) }
     };
   }
 }

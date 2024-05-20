@@ -42,6 +42,12 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="enums\EVersion.cs" />
+      <Compile Remove="model\qr-code\QRSize.cs" />
+      <Compile Remove="model\utility-classes\ArrayHelper.cs" />
+    </ItemGroup>
+
 
 
 

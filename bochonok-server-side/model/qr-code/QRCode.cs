@@ -1,22 +1,24 @@
 ﻿using bochonok_server_side.builders;
 using bochonok_server_side.factories;
-using bochonok_server_side.model;
-using bochonok_server_side.Model.Image.abstractions;
+using bochonok_server_side.Model.Image;
 using bochonok_server_side.Model.Image.enums;
-using Point = bochonok_server_side.model.utility_classes.Point;
+using bochonok_server_side.model.qr_code.abstractions;
+using bochonok_server_side.model.qr_code.enums;
+using bochonok_server_side.model.qr_code.QrCodeConfiguration;
 
-namespace bochonok_server_side.Model.Image;
+namespace bochonok_server_side.model.qr_code;
 
 public class QRCode : QRAtomicGroup<QRAtomic>
 {
     public ImageBase Image;
     
     private string _encodeString;
+    private QRCodeConfiguration _cfg;
     
-    // TODO: add dynamic value for size
-    // TODO: add qr version selection
-    public QRCode(string encodeString): base(new QRSize(25, 25))
+    public QRCode(string encodeString)
     {
+        _cfg = new QRCodeConfiguration(EVersion.V2, EECLevel.L, EEncodingMode.BYTE);
+        Size = _cfg.Size;
         _encodeString = encodeString;
         _items = Fill();
     }
@@ -25,37 +27,41 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     {
         return Enumerable.Range(0, Size.Width)
             .Select(_ => Enumerable.Range(0, Size.Height)
-                .Select(_ => QRAtomicsFactory.CreateQrModule(2))
+                .Select(_ => QRAtomicsFactory.CreateQrModule(EModuleType.Red))
                 .ToList())
             .ToList();
     }
 
     public QRCode Build()
     {
-        var  builder = new QRBuilder(this);
+        var  builder = new QRBuilder(_cfg, GetAtomicItems());
         var  encodedString = Encode();
         
-        // TODO: check finder size without hardcoding
-        // TODO: fix axis
-        // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
         var buildedQR = 
             builder
-            .AddPattern(new QRFinderPattern(), new Point(0, 0), "finder")
-            .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0), "finder")
-            .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7), "finder")
+            .AddPattern(new QRFinderPattern(), _cfg.PatternsPosition[EPlacement.TopLeft], "finder")
+            .AddPattern(new QRFinderPattern(),  _cfg.PatternsPosition[EPlacement.BottomLeft], "finder")
+            .AddPattern(new QRFinderPattern(),  _cfg.PatternsPosition[EPlacement.TopRight], "finder")
+            .AddPattern(new QRAlignmentPattern(), _cfg.PatternsPosition[EPlacement.BottomRight], "alignment")
+            .AddModule(new QRModule(EModuleType.Black), _cfg.PatternsPosition[EPlacement.BottomLeftOffset], true)
             .AddFindersSafeZone()
-            .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9), "alignment")
-            .AddTiming(9)
+            .AddTiming()
+            // This part of code is incorrect. Firstly i should determine best mask then i should proceed with format info
+            // so let it be as it is.... for now... maybe one day :D.
+            // about format info - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
             .AddFormatInfo("111011111000100")
-            .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
             .AddIterative(encodedString)
             .ApplyMask()
-            .AddQrSafeZone()
+            //
+            .AddQrQuiteZone()
             .RetrieveItems();
         SetItems(buildedQR);
 
         return this;
     }
 
-    private string Encode() => QRDataEncoder.EncodeCodewords(_encodeString, EEncodingMode.BYTE, EVersion.V2);
+    private string Encode()
+    {
+        return QRDataEncoder.EncodeCodewords(_encodeString, _cfg.BlockInformation, _cfg.EncodingMeta);
+    }
 }

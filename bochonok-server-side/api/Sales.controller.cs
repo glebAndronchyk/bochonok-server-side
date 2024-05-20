@@ -1,15 +1,15 @@
 using AutoMapper;
+using bochonok_server_side.Controllers.BaseController;
 using bochonok_server_side.database;
 using bochonok_server_side.dto.sale;
-using bochonok_server_side.model.sale;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace bochonok_server_side.Controllers;
+namespace bochonok_server_side.api;
 
   [ApiController]
   [Route("api/[controller]")]
-  public class SalesController : BaseController.BaseController
+  public class SalesController : BaseController
   {
     public SalesController(DataContext context, IMapper mapper) : base(context, mapper)
     { }

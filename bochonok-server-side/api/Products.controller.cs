@@ -1,16 +1,16 @@
 using AutoMapper;
-using bochonok_server_side.database;
-using bochonok_server_side.dto.product;
-using bochonok_server_side.Model.Image;
-using bochonok_server_side.model.product_list;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using bochonok_server_side.Controllers.BaseController;
+using bochonok_server_side.database;
+using bochonok_server_side.dto.product;
+using bochonok_server_side.model.product_list;
 
-namespace bochonok_server_side.Controllers
+namespace bochonok_server_side.api
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class ProductsController : BaseController.BaseController
+  public class ProductsController : BaseController
   {
     public ProductsController(DataContext context, IMapper mapper)
       :base(context, mapper)
