@@ -1,4 +1,4 @@
-namespace bochonok_server_side.model.utility_classes;
+namespace bochonok_server_side.model.utility_classes.grouping_utilities;
 
 public class AreaCoordinates
 {

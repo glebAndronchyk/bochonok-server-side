@@ -3,6 +3,7 @@ using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.Model.Image.interfaces;
 using bochonok_server_side.model.qr_code;
 using bochonok_server_side.model.qr_code.abstractions;
+using bochonok_server_side.model.qr_code.enums;
 using bochonok_server_side.model.utility_classes;
 using Point = bochonok_server_side.model.utility_classes.Point;
 
@@ -12,15 +13,15 @@ namespace bochonok_server_side.builders;
 
 public class QRBuilder
 {
-  private QRAtomicGroup<QRAtomic> _qrCtx;
+  private QRCodeConfiguration _cfg;
   private List<List<QRAtomic>> _items;
   
   private List<DescribedArea> _maskSafeZones = new ();
   
-  public QRBuilder(QRAtomicGroup<QRAtomic> qrCtx)
+  public QRBuilder(QRCodeConfiguration cfg, List<List<QRAtomic>> items)
   {
-    _qrCtx = qrCtx;
-    _items = _qrCtx.GetAtomicItems();
+    _cfg = cfg;
+    _items = items;
   }
 
   public QRBuilder AddPattern(IQRPattern pattern, Point start, string name)
@@ -44,16 +45,16 @@ public class QRBuilder
     return this;
   }
 
-  public QRBuilder AddTiming(int length)
+  public QRBuilder AddTiming()
   {
-    Point verticalStart = new (8, 6);
-    Point horizontalStart = new (6, 8);
-
-    string timingBits = string.Join("", Enumerable.Range(0, length).Select((_, i) => i % 2 == 0 ? "1" : "0"));
+    string timingBits = string.Join("", 
+      Enumerable.Range(0, _cfg.TimingLength)
+        .Select((_, i) => i % 2 == 0 ? "1" : "0")
+    );
     
     PlaceBitsInSequence(timingBits,
-      verticalStart,
-      horizontalStart,
+      _cfg.TimingPositions[EAxisPlacement.Vertical],
+      _cfg.TimingPositions[EAxisPlacement.Horizontal],
       new (1, 1)
     );
 
@@ -63,36 +64,39 @@ public class QRBuilder
   public QRBuilder AddFindersSafeZone()
   {
     var finderAreas = _maskSafeZones.Where(zone => zone.Name == "finder").ToList();
-    var safeZoneBits = String.Join("", Enumerable.Range(0, 8).Select(_ => "0"));
-    
+    var finderModuleSize = QRCodeConfiguration.FinderModuleSize;
+    var amountOfBits = finderModuleSize + 1;
+    var size = _cfg.Size.Width;
+    var rightOffset = size - finderModuleSize;
+    var safeZoneBits = String.Join("", Enumerable.Range(0, amountOfBits).Select(_ => "0"));
+
     foreach (var area in finderAreas)
     {
       Point verticalStart = new (0, 0);
       Point horizontalStart = new (0, 0);
       var topLeftCoord = area.TopLeftCorner;
-      
-      switch (topLeftCoord.Y)
+
+      if (topLeftCoord.Y == 0)
       {
-        case 0:
-          verticalStart = new (0, 7);
-          horizontalStart = new (7, 0);
-          break;
-        case 18:
-          verticalStart = new (0, topLeftCoord.Y - 1);
-          horizontalStart = new (topLeftCoord.X + 7, topLeftCoord.Y - 1);
-          break;
+        verticalStart = new Point(0, finderModuleSize);
+        horizontalStart = new Point(finderModuleSize, 0);
+      }
+      else if (topLeftCoord.Y == rightOffset)
+      {
+        verticalStart = new Point(0, topLeftCoord.Y - 1);
+        horizontalStart = new Point(topLeftCoord.X + finderModuleSize, topLeftCoord.Y - 1);
       }
 
-      if (topLeftCoord.X is > 0 and < 24)
+      if (topLeftCoord.X > 0 && topLeftCoord.X < size - 1)
       {
-        verticalStart = new (topLeftCoord.X - 1, topLeftCoord.Y + 7);
-        horizontalStart = new (topLeftCoord.X - 1, 0);
+        verticalStart = new Point(topLeftCoord.X - 1, topLeftCoord.Y + finderModuleSize);
+        horizontalStart = new Point(topLeftCoord.X - 1, 0);
       }
-      
+
       PlaceBitsInSequence(safeZoneBits,
         verticalStart,
         horizontalStart,
-        new (1, 1),
+        new Point(1, 1),
         true
       );
     }
@@ -114,11 +118,13 @@ public class QRBuilder
 
   public QRBuilder AddIterative(string bits)
   {
-    int x = _qrCtx.Size.Width - 1;
-    int y = _qrCtx.Size.Height;
+    int x = _items.Count - 1;
+    int y = _items.Count;
     var direction = EFillDirection.Upwards;
     var bitsContainer = new BitsContainer(bits, true);
     var verticalTimingPosition = 8;
+    var defaultXSkip = 2;
+    var timingXSkip = 3;
     
     _items[x][y - 1] = GetNewModule(bitsContainer);
     
@@ -126,14 +132,14 @@ public class QRBuilder
     {
       y = direction == EFillDirection.Upwards ? y - 1 : y + 1;
       
-      if (y is -1 or 25)
+      if (y == -1 || y == _cfg.Size.Width)
       {
         if (x == 0)
         {
           break;
         }
 
-        x -= x == verticalTimingPosition ? 3 : 2;
+        x -= x == verticalTimingPosition ? timingXSkip : defaultXSkip;
         direction = direction == EFillDirection.Upwards ?
             EFillDirection.Downwards :
             EFillDirection.Upwards;
@@ -160,17 +166,17 @@ public class QRBuilder
   {
     var zeroToSix = formatInfo.Substring(0, 7);
     var sixToFourteenth = formatInfo.Substring(6, 8);
-    
+    var finderSizeWithCOnfiguration = QRCodeConfiguration.FinderSizeWithSafeZone;
     
     PlaceBitsInSequence(zeroToSix,
-      new Point(_qrCtx.Size.Height - 1, 8),
-      new Point(8, 0),
+      new Point(_items.Count - 1, 8),
+      new Point(finderSizeWithCOnfiguration, 0),
       new Point(-1, 1)
       );
     PlaceBitsInSequence(
       sixToFourteenth,
-      new Point(8, 8),
-      new Point(8, _qrCtx.Size.Height - 8),
+      new Point(finderSizeWithCOnfiguration, finderSizeWithCOnfiguration),
+      new Point(finderSizeWithCOnfiguration, _items.Count - finderSizeWithCOnfiguration),
       new Point(-1, 1)
     );
 
@@ -191,12 +197,12 @@ public class QRBuilder
       var nextVerticalModule = (QRModule)_items[xCoord][verticalCopy.Y];
       var nextHorizontalModule = (QRModule)_items[horizontalCopy.X][yCoord];
 
-      if (nextVerticalModule.Type is 0 or 1 && !ignoreModuleSkip)
+      if (IsBlackOrWhite(nextVerticalModule.Type) && !ignoreModuleSkip)
       {
         xCoord += increasers.X;
       }
       
-      if (nextHorizontalModule.Type is 0 or 1 && !ignoreModuleSkip)
+      if (IsBlackOrWhite(nextHorizontalModule.Type) && !ignoreModuleSkip)
       {
         yCoord += increasers.Y;
       }
@@ -262,7 +268,7 @@ public class QRBuilder
   
   private bool ProcessNextModule(QRModule module, BitsContainer bitsContainer, Point pos)
   {
-    if (module.Type == 2)
+    if (module.Type == EModuleType.Red)
     {
       if (!bitsContainer.HasNext())
       {
@@ -280,7 +286,7 @@ public class QRBuilder
     var currentBit = bitsContainer.GetCurrent();
     bitsContainer.TryIncrementCounter();
     
-    return new QRModule(byte.Parse(currentBit));
+    return new QRModule((EModuleType)byte.Parse(currentBit));
   }
   
   private Point GetYModulePositionByDirection(int x, int y, EFillDirection direction)
@@ -288,7 +294,7 @@ public class QRBuilder
     var nextY = direction == EFillDirection.Upwards ? y - 1 : y + 1;
     var nextX = x;
     
-    if (nextY is -1 or 25)
+    if (nextY == -1 || nextY == _cfg.Size.Width)
     {
       nextY = nextY > 0 ? nextY - 1 : nextY + 1;
       nextX = nextX > 1 ? nextX - 2 : 0;
@@ -318,4 +324,6 @@ public class QRBuilder
     
     return this;
   }
+
+  private bool IsBlackOrWhite(EModuleType module) => module is EModuleType.Black or EModuleType.White;
 }

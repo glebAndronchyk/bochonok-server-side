@@ -13,9 +13,12 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     public ImageBase Image;
     
     private string _encodeString;
+    private QRCodeConfiguration _cfg;
+
     
     public QRCode(string encodeString): base(new ScalableSize(25, 25))
     {
+        _cfg = new QRCodeConfiguration(EVersion.V2, EECLevel.L, EMaskPattern.L0);   
         _encodeString = encodeString;
         _items = Fill();
     }
@@ -24,26 +27,26 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     {
         return Enumerable.Range(0, Size.Width)
             .Select(_ => Enumerable.Range(0, Size.Height)
-                .Select(_ => QRAtomicsFactory.CreateQrModule(2))
+                .Select(_ => QRAtomicsFactory.CreateQrModule(EModuleType.Red))
                 .ToList())
             .ToList();
     }
 
     public QRCode Build()
     {
-        var  builder = new QRBuilder(this);
+        var  builder = new QRBuilder(_cfg, GetAtomicItems());
         var  encodedString = Encode();
         
         // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
         var buildedQr = 
             builder
-            .AddPattern(new QRFinderPattern(), QRCodeConfiguration.FinderPatternsPosition[EPlacement.TopLeft], "finder")
-            .AddPattern(new QRFinderPattern(), new Point(Size.Width - 7, 0), "finder")
-            .AddPattern(new QRFinderPattern(), new Point(0, Size.Height - 7), "finder")
-            .AddPattern(new QRAlignmentPattern(), new Point(Size.Width - 9, Size.Height - 9), "alignment")
-            .AddModule(new QRModule(1), new Point(4 * 2 + 9, 8), true)
+            .AddPattern(new QRFinderPattern(), _cfg.PatternsPosition[EPlacement.TopLeft], "finder")
+            .AddPattern(new QRFinderPattern(),  _cfg.PatternsPosition[EPlacement.BottomLeft], "finder")
+            .AddPattern(new QRFinderPattern(),  _cfg.PatternsPosition[EPlacement.TopRight], "finder")
+            .AddPattern(new QRAlignmentPattern(), _cfg.PatternsPosition[EPlacement.BottomRight], "alignment")
+            .AddModule(new QRModule(EModuleType.Black), _cfg.PatternsPosition[EPlacement.BottomLeftOffset], true)
             .AddFindersSafeZone()
-            .AddTiming(9)
+            .AddTiming()
             .AddFormatInfo("111011111000100")
             .AddIterative(encodedString)
             .ApplyMask()

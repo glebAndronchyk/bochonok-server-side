@@ -6,4 +6,5 @@ public enum EPlacement
     TopLeft,
     BottomRight,
     BottomLeft,
+    BottomLeftOffset,
 }

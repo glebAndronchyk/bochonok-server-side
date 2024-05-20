@@ -20,10 +20,7 @@ public class QRDataEncoder
     }
     
     string result = "";
-    string bitVersionPresenter = $"{(int)version}-{(Convert.ToString((int)mode, 2))}";
-    byte maxBits = (byte)JObject.Parse(File.ReadAllText("data-bits.json"))
-      .SelectToken($"$.data-bits.elements[?(@.name == '{bitVersionPresenter}')]")!
-      ["bits"]!;
+    byte maxBits = 8;
     
     AddModeIndicator(ref result, mode);
     AddCharacterIndicator(ref result, str, maxBits);
@@ -32,9 +29,9 @@ public class QRDataEncoder
     PadToMultipleOfEight(ref result);
     AddPadBytes(ref result, maxCodewords);
     AddErrorCorrectionBytes(ref result, maxBits);
-    // AddSaveBits(ref result);
+    AddErrorCorrectionPadding(ref result);
     
-    return result + "0000000";
+    return result;
   }
 
   private static void EncodeEntryString(ref string data, string inputString) => data += String.Join("", StringEncoder.ByteModeEncode(inputString).ToArray());
@@ -93,18 +90,16 @@ public class QRDataEncoder
     {
       for (int i = 0; i < deficit; i++)
       {
-        if (i % 2 == 0)
-        {
-          data += _bin236;
-        }
-        else
-        {
-          data += _bin17;
-        }
+        data += i % 2 == 0 ? _bin236 : _bin17;
       }
     }
   }
-  
+
+  private static void AddErrorCorrectionPadding(ref string data)
+  {
+    data += String.Join("", Enumerable.Range(0, 7).Select(_ => "0").ToArray());
+  }
+
   private static void AddErrorCorrectionBytes(ref string data, byte maxBits)
   {
     ReedSolomonEncoder encoder = new ReedSolomonEncoder(GenericGF.QR_CODE_FIELD_256);

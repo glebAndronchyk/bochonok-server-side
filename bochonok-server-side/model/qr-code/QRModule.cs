@@ -1,30 +1,27 @@
 using bochonok_server_side.model.qr_code.abstractions;
+using bochonok_server_side.model.qr_code.enums;
 
 namespace bochonok_server_side.model.qr_code;
 
 public class QRModule : QRAtomic
 {
-  public byte Type;
+  public EModuleType Type;
   
   // TODO: add different color support and implement decorator pattern for easier use.
-  public QRModule(byte moduleType, ScalableSize? size = null) : base(size)
+  public QRModule(EModuleType moduleType, ScalableSize? size = null) : base(size)
   {
-    if (moduleType > 3)
-    {
-      throw new NotImplementedException("Can't use this number for locating module type.");
-    }
-    
+    var byteModule = (byte)moduleType;
     Type = moduleType;
-    _bytesMatrix.Add(moduleType); 
+    _bytesMatrix.Add(byteModule); 
   }
 
   public QRModule ReverseBit()
   {
-    if (Type >= 2)
+    if (Type == EModuleType.Red)
     {
       throw new Exception("Bit wasn't set for module.");
     }
 
-    return new QRModule(Convert.ToByte(!Convert.ToBoolean(Type)));
+    return new QRModule(Type == EModuleType.Black ? EModuleType.White : EModuleType.Black);
   }
 }
