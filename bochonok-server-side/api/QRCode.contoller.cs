@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace bochonok_server_side.Controllers
 {
   [ApiController]
-  [Route("controllers/[controller]")]
+  [Route("api/[controller]")]
   public class QRCodeController : BaseController.BaseController
   {
     public QRCodeController(DataContext context, IMapper mapper) : base(context, mapper)

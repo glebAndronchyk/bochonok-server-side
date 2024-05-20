@@ -8,7 +8,7 @@ using bochonok_server_side.model.product_list;
 namespace bochonok_server_side.Controllers
 {
   [ApiController]
-  [Route("controllers/[controller]")]
+  [Route("api/[controller]")]
   public class ProductsController : BaseController.BaseController
   {
     public ProductsController(DataContext context, IMapper mapper)
@@ -79,7 +79,7 @@ namespace bochonok_server_side.Controllers
       return Ok(_mapper.Map<Product, RatingDTO>(product));
     }
 
-    // PUT: controllers/Products/5/Price
+    // PUT: api/Products/5/Price
     // [HttpPut("{id}/Price")]
     // public async Task<IActionResult> ChangeProductPrice(int id, [FromBody] decimal newPrice)
     // {

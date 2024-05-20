@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace bochonok_server_side.Controllers
 {
   [ApiController]
-  [Route("controllers/[controller]")]
+  [Route("api/[controller]")]
   public class CategoriesController : BaseController.BaseController
   {
     public CategoriesController(DataContext context, IMapper mapper) : base(context, mapper)
@@ -27,7 +27,7 @@ namespace bochonok_server_side.Controllers
       return Ok(withMIMECategories.OrderBy(category => category.isFavorite ? -1 : 1));
     }
 
-    // POST: controllers/Categories
+    // POST: api/Categories
     [HttpPost]
     public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO categoryBody)
     {
