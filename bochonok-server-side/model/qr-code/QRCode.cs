@@ -4,6 +4,7 @@ using bochonok_server_side.Model.Image;
 using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.model.qr_code.abstractions;
 using bochonok_server_side.model.qr_code.enums;
+using bochonok_server_side.model.qr_code.QrCodeConfiguration;
 
 namespace bochonok_server_side.model.qr_code;
 
@@ -17,7 +18,8 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     
     public QRCode(string encodeString): base(new ScalableSize(25, 25))
     {
-        _cfg = new QRCodeConfiguration(EVersion.V2, EECLevel.L, EMaskPattern.L0);   
+        _cfg = new QRCodeConfiguration(EVersion.V2, EECLevel.L, EEncodingMode.BYTE);
+        Size = _cfg.Size;
         _encodeString = encodeString;
         _items = Fill();
     }
@@ -37,7 +39,7 @@ public class QRCode : QRAtomicGroup<QRAtomic>
         var  encodedString = Encode();
         
         // TODO: format info encoding - refer to https://www.thonky.com/qr-code-tutorial/format-version-tables
-        var buildedQr = 
+        var buildedQR = 
             builder
             .AddPattern(new QRFinderPattern(), _cfg.PatternsPosition[EPlacement.TopLeft], "finder")
             .AddPattern(new QRFinderPattern(),  _cfg.PatternsPosition[EPlacement.BottomLeft], "finder")
@@ -51,10 +53,13 @@ public class QRCode : QRAtomicGroup<QRAtomic>
             .ApplyMask()
             .AddQrSafeZone()
             .RetrieveItems();
-        SetItems(buildedQr);
+        SetItems(buildedQR);
 
         return this;
     }
 
-    private string Encode() => QRDataEncoder.EncodeCodewords(_encodeString, EEncodingMode.BYTE, EVersion.V2);
+    private string Encode()
+    {
+        return QRDataEncoder.EncodeCodewords(_encodeString, _cfg.BlockInformation, _cfg.EncodingMeta);
+    }
 }

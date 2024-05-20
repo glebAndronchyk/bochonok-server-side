@@ -6,6 +6,7 @@ using bochonok_server_side.model.qr_code.abstractions;
 using bochonok_server_side.model.qr_code.enums;
 using bochonok_server_side.model.utility_classes;
 using Point = bochonok_server_side.model.utility_classes.Point;
+using QRCodeConfiguration = bochonok_server_side.model.qr_code.QrCodeConfiguration.QRCodeConfiguration;
 
 namespace bochonok_server_side.builders;
 
@@ -311,8 +312,8 @@ public class QRBuilder
     {
       for (int i = 0; i < safeAreaLength; i++)
       {
-        row.Insert(0, QRAtomicsFactory.CreateQrModule(0));
-        row.Add(QRAtomicsFactory.CreateQrModule(0));
+        row.Insert(0, QRAtomicsFactory.CreateQrModule(EModuleType.White));
+        row.Add(QRAtomicsFactory.CreateQrModule(EModuleType.White));
       }
     }
     

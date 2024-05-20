@@ -1,4 +1,5 @@
 using AutoMapper;
+using bochonok_server_side.Controllers.BaseController;
 using bochonok_server_side.database;
 using bochonok_server_side.dto.qr_code;
 using bochonok_server_side.model.encoding;
@@ -6,11 +7,11 @@ using bochonok_server_side.Model.Image;
 using bochonok_server_side.model.qr_code;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bochonok_server_side.Controllers
+namespace bochonok_server_side.api
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class QRCodeController : BaseController.BaseController
+  public class QRCodeController : BaseController
   {
     public QRCodeController(DataContext context, IMapper mapper) : base(context, mapper)
     { }
