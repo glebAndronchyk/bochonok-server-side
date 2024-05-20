@@ -7,6 +7,12 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
 {
   protected List<List<T>> _items;
 
+  public QRAtomicGroup() : base(null)
+  {
+    _items = new List<List<T>>();
+  }
+
+  
   public QRAtomicGroup(ScalableSize scalableSize) : base(scalableSize)
   {
     _items = new List<List<T>>();

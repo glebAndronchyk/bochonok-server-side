@@ -14,9 +14,8 @@ public class QRCode : QRAtomicGroup<QRAtomic>
     
     private string _encodeString;
     private QRCodeConfiguration _cfg;
-
     
-    public QRCode(string encodeString): base(new ScalableSize(25, 25))
+    public QRCode(string encodeString)
     {
         _cfg = new QRCodeConfiguration(EVersion.V2, EECLevel.L, EEncodingMode.BYTE);
         Size = _cfg.Size;

@@ -9,8 +9,8 @@ namespace bochonok_server_side.Model.Image;
 
 public class QRDataEncoder
 {
-  private static readonly string _bin236 = "11101100";
-  private static readonly string _bin17 = "00010001";
+  private const string _bin236 = "11101100";
+  private const string _bin17 = "00010001";
   
   public static string EncodeCodewords(string str, QRBlockInformation information, QREncodingMeta encoding)
   {

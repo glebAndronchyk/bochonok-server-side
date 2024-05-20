@@ -6,14 +6,23 @@ namespace bochonok_server_side.model.qr_code.abstractions;
 
 public abstract class QRAtomic : ICloneable
 {
-  public ScalableSize Size;
+  public ScalableSize Size
+  {
+    get => _size;
+    set
+    {
+      _size = value;
+      _bytesMatrix = new(value.Width, value.Height, 0);
+    }
+  }
   
+  private ScalableSize _size; // Backing field for the property
+
   protected Mat<byte> _bytesMatrix;
   
   protected QRAtomic(ScalableSize? scalableSize)
   {
     Size = scalableSize ?? new(5, 5);
-    _bytesMatrix = new (Size.Width, Size.Height, 0);
   }
   
   public Mat<byte> GetMatrix()
