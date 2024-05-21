@@ -32,9 +32,15 @@ namespace bochonok_server_side.api
     public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO body)
     {
       var categoryDto = _mapper.Map<CategoryRequestDTO, CategoryDTO>(body);
-      categoryDto.imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64);
       
-      _context.Categories.Add(categoryDto);
+      _context.Categories.Add(new CategoryDTO
+      {
+        description = categoryDto.description,
+        title = categoryDto.title,
+        isFavorite = categoryDto.isFavorite,
+        imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64),
+        id = categoryDto.id,
+      });
       await _context.SaveChangesAsync();
 
       return CreatedAtAction(nameof(GetCategory), new { categoryDto.id }, categoryDto);
