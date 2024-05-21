@@ -26,7 +26,7 @@ public class QRDataEncoder
     
     AddModeIndicator(ref result, encoding.binaryRepresentation);
     AddCharacterIndicator(ref result, str, maxBits);
-    EncodeEntryString(ref result, str);
+    EncodeEntryString(ref result, str, encoding.encodingMethod);
     AddTerminatorBits(ref result, maxCodewords, maxBits);
     PadToMultipleOfEight(ref result, maxBits);
     AddPadBytes(ref result, maxCodewords, maxBits);
@@ -36,7 +36,12 @@ public class QRDataEncoder
     return result;
   }
 
-  private static void EncodeEntryString(ref string data, string inputString) => data += String.Join("", StringEncoder.ByteModeEncode(inputString).ToArray());
+  private static void EncodeEntryString(ref string data, string inputString,
+    QREncodingMeta.EncodingMethodType encodeMethod)
+  {
+    data += String.Join("", encodeMethod(inputString).ToArray());
+  }
+
   private static void AddCharacterIndicator(ref string data, string str, byte maxBits)
   {
     string modeIndicator = Pad(Convert.ToString(str.Length, 2), maxBits);

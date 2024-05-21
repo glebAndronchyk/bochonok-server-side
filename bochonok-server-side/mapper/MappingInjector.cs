@@ -56,9 +56,7 @@ public class MappingInjector
           s => StringEncoder.GenerateRandom(8))
         );
     }
-    else
-    {
-      throw new ArgumentException("TDestination does not have a writable string property named 'id'.");
-    }
+    
+    throw new ArgumentException("TDestination does not have a writable string property named 'id'.");
   }
 }

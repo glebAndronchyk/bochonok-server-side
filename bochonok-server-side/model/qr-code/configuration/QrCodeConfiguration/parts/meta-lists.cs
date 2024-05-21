@@ -1,3 +1,4 @@
+using bochonok_server_side.model.encoding;
 using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.model.qr_code.enums;
 using Point = bochonok_server_side.model.utility_classes.Point;
@@ -15,6 +16,7 @@ public partial class QRCodeConfiguration
             {
                 binaryRepresentation = "0100",
                 maxBits = new MaxBitsRepresentation(8, 16, 16),
+                encodingMethod = StringEncoder.ByteModeEncode
             }
         }
     };

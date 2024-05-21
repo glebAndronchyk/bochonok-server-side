@@ -1,6 +1,5 @@
 namespace bochonok_server_side.model.utility_classes;
 
-// TODO: add start/end methods
 public class BitsContainer
 {
   private string _bits;
