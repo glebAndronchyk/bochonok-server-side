@@ -1,3 +1,4 @@
+using bochonok_server_side.model._errors;
 using bochonok_server_side.model.qr_code.abstractions;
 using bochonok_server_side.model.qr_code.enums;
 
@@ -7,7 +8,6 @@ public class QRModule : QRAtomic
 {
   public EModuleType Type;
   
-  // TODO: add different color support and implement decorator pattern for easier use.
   public QRModule(EModuleType moduleType, ScalableSize? size = null) : base(size)
   {
     var byteModule = (byte)moduleType;
@@ -19,7 +19,7 @@ public class QRModule : QRAtomic
   {
     if (Type == EModuleType.Red)
     {
-      throw new Exception("Bit wasn't set for module.");
+      throw new QRCodeOverflowException("Bit wasn't set for module.");
     }
 
     return new QRModule(Type == EModuleType.Black ? EModuleType.White : EModuleType.Black);

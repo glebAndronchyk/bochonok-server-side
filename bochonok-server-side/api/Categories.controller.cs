@@ -28,11 +28,10 @@ namespace bochonok_server_side.api
       return Ok(withMIMECategories.OrderBy(category => category.isFavorite ? -1 : 1));
     }
 
-    // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO categoryBody)
+    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO body)
     {
-      var categoryDto = _mapper.Map<CategoryRequestDTO, CategoryDTO>(categoryBody);
+      var categoryDto = _mapper.Map<CategoryRequestDTO, CategoryDTO>(body);
       categoryDto.imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64);
       
       _context.Categories.Add(categoryDto);

@@ -10,8 +10,6 @@ namespace bochonok_server_side.model.qr_code;
 
 public class QRCode : QRAtomicGroup<QRAtomic>
 {
-    public ImageBase Image;
-    
     private string _encodeString;
     private QRCodeConfiguration _cfg;
     

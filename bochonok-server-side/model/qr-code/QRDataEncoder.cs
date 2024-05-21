@@ -1,3 +1,4 @@
+using bochonok_server_side.model._errors;
 using bochonok_server_side.model.encoding;
 using bochonok_server_side.Model.Image.enums;
 using bochonok_server_side.model.qr_code;
@@ -16,7 +17,7 @@ public class QRDataEncoder
   {
     if (str.Length > information.totalCW)
     {
-      throw new ArgumentException("Input string is too long");
+      throw new QRCodeOverflowException("Input string is too long");
     }
 
     var maxCodewords = information.totalCW;

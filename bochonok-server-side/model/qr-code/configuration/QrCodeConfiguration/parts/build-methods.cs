@@ -1,3 +1,4 @@
+using bochonok_server_side.model._errors;
 using bochonok_server_side.model.qr_code.enums;
 using Point = bochonok_server_side.model.utility_classes.Point;
 
@@ -9,7 +10,7 @@ public partial class QRCodeConfiguration
     {
         var blockInfo = _blocksInfo.Find(block => block.version == Version && block.errorCorrection == ErrorCorrection);
 
-        BlockInformation = blockInfo ?? throw new NotImplementedException("No such version/level configuration.");
+        BlockInformation = blockInfo ?? throw new QRCodeEncodingException("No such version/level configuration.");
     }
 
     private void SetTimingLength()

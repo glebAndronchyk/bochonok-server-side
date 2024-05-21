@@ -47,9 +47,9 @@ namespace bochonok_server_side.api
     }
     
     [HttpPost]
-    public async Task<ActionResult<SimplifiedProductDTO>> AddProduct(ProductRequestDTO productBody)
+    public async Task<ActionResult<SimplifiedProductDTO>> AddProduct(ProductRequestDTO body)
     {
-      var productDto = _mapper.Map<ProductRequestDTO, ProductDTO>(productBody);
+      var productDto = _mapper.Map<ProductRequestDTO, ProductDTO>(body);
       _context.ProductList.Add(productDto);
       await _context.SaveChangesAsync();
 
