@@ -9,7 +9,7 @@ public class StringEncoder
   {
     List<string> encodedStrings = new List<string>();
 
-    byte[] bytes = Encoding.UTF8.GetBytes(input);
+    byte[] bytes = Encoding.GetEncoding("UTF-8").GetBytes(input);
 
     foreach (byte b in bytes)
     {
@@ -33,6 +33,29 @@ public class StringEncoder
   
     return initial;
   }
+
+  public static string GenerateRandom(int length)
+  {
+    StringBuilder sb = new StringBuilder();
+    int numGuidsToConcat = (length - 1) / 32 + 1;
+    for(int i = 1; i <= numGuidsToConcat; i++)
+    {
+      sb.Append(Guid.NewGuid().ToString("N"));
+    }
+
+    return sb.ToString(0, length);
+  }
+
+  public static IEnumerable<String> SplitInParts(string s, int partLength) {
+    if (s == null)
+      throw new ArgumentNullException(nameof(s));
+    if (partLength <= 0)
+      throw new ArgumentException("Part length has to be positive.", nameof(partLength));
+
+    for (var i = 0; i < s.Length; i += partLength)
+      yield return s.Substring(i, Math.Min(partLength, s.Length - i));
+  }
+
   
   public static string AddMIMEType(string base64Data, string mime)
   {

@@ -1,27 +1,26 @@
 using AutoMapper;
+using bochonok_server_side.Controllers.BaseController;
 using bochonok_server_side.database;
 using bochonok_server_side.dto.category;
 using bochonok_server_side.model.encoding;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace bochonok_server_side.Controllers
+namespace bochonok_server_side.api
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class CategoriesController : BaseController.BaseController
+  public class CategoriesController : BaseController
   {
     public CategoriesController(DataContext context, IMapper mapper) : base(context, mapper)
     { }
 
-    // GET: api/Categories
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
     {
       var categories = await _context.Categories.ToListAsync();
       var withMIMECategories = categories.Select(c =>
       {
-        // TODO: resolve mime type actions
         c.imageB64 = StringEncoder.AddMIMEType(c.imageB64, "image/png");
         return c;
       });
@@ -29,20 +28,24 @@ namespace bochonok_server_side.Controllers
       return Ok(withMIMECategories.OrderBy(category => category.isFavorite ? -1 : 1));
     }
 
-    // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryTransferObject categoryBody)
+    public async Task<ActionResult<CategoryDTO>> AddCategory(CategoryRequestDTO body)
     {
-      var categoryDto = _mapper.Map<CategoryTransferObject, CategoryDTO>(categoryBody);
-      categoryDto.imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64);
+      var categoryDto = _mapper.Map<CategoryRequestDTO, CategoryDTO>(body);
       
-      _context.Categories.Add(categoryDto);
+      _context.Categories.Add(new CategoryDTO
+      {
+        description = categoryDto.description,
+        title = categoryDto.title,
+        isFavorite = categoryDto.isFavorite,
+        imageB64 = StringEncoder.GetCleanB64(categoryDto.imageB64),
+        id = categoryDto.id,
+      });
       await _context.SaveChangesAsync();
 
       return CreatedAtAction(nameof(GetCategory), new { categoryDto.id }, categoryDto);
     }
 
-    // GET: api/Categories/5
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoryDTO>> GetCategory(string id)
     {

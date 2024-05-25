@@ -1,18 +1,19 @@
-using bochonok_server_side.model;
-using bochonok_server_side.model.utility_classes;
+using bochonok_server_side.model.utility_classes.grouping_utilities;
+using bochonok_server_side.model.utility_classes.Mat;
 
-namespace bochonok_server_side.Model.Image.abstractions;
+namespace bochonok_server_side.model.qr_code.abstractions;
 
 public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
 {
   protected List<List<T>> _items;
 
-  public QRAtomicGroup(List<List<T>> items, QRSize qrSize) : base(qrSize)
+  public QRAtomicGroup() : base(null)
   {
-    SetItems(items);
+    _items = new List<List<T>>();
   }
+
   
-  public QRAtomicGroup(QRSize qrSize) : base(qrSize)
+  public QRAtomicGroup(ScalableSize scalableSize) : base(scalableSize)
   {
     _items = new List<List<T>>();
   }
@@ -20,8 +21,8 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
   public void SetItems(List<List<T>> items)
   {
     _items = items;
-    var r = Flatten();
-    _bytesMatrix = r.bytesMatrix;
+    var flattenItems = Flatten();
+    _bytesMatrix = flattenItems.bytesMatrix;
   }
   
   public List<List<T>> GetAtomicItems()
@@ -29,7 +30,6 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
     return _items;
   }
 
-  // Rework this
   public FlattenGroup Flatten()
   {
     int resultWidth = _items.Sum(row => row.Any() ? row.Max(item => item.Size.Width) : 0);
@@ -38,24 +38,16 @@ public abstract class QRAtomicGroup<T> : QRAtomic where T: QRAtomic
     var result = new FlattenGroup(resultWidth, resultHeight);
 
     int currentX = 0;
-    int currentY;
 
     foreach (List<T> row in _items)
     {
-      currentY = 0;
+      var currentY = 0;
 
       foreach (T item in row)
       {
-        ByteMatrix itemBytes;
+        Mat<byte> itemBytes;
 
-        if (item is QRAtomicGroup<T> group)
-        {
-          itemBytes = group.Flatten().bytesMatrix;
-        }
-        else
-        {
-          itemBytes = item.GetMatrix();
-        }
+        itemBytes = item is QRAtomicGroup<T> group ? group.Flatten().bytesMatrix : item.GetMatrix();
 
         for (int i = 0; i < item.Size.Width; i++)
         {

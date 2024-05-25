@@ -26,6 +26,7 @@
         <PackageReference Include="SQLite" Version="3.13.0" />
         <PackageReference Include="STH1123.ReedSolomon" Version="2.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="ZXing.Net" Version="0.16.9" />
 
 
 
@@ -42,8 +43,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations\" />
+      <Compile Remove="enums\EVersion.cs" />
+      <Compile Remove="model\qr-code\QRSize.cs" />
+      <Compile Remove="model\utility-classes\ArrayHelper.cs" />
     </ItemGroup>
+
 
 
 

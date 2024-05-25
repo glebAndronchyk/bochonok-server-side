@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Lb0OXQD5kYdmIEYQLbvGOahzdSAGY0Spp0EBd0gAb2UjBwqnTI69V1d26is/3Kh8OAyzngltDNet6obkgo4eIA==",
+  "dgSpecHash": "3JXK46OJpdhsSKtSlTMVl9Iu9qOV/I5QkmozKCAmUQTwya0ewpz7r9fEAzsEU0hxB3yQq/oLS7YdUzHn1rZPjA==",
   "success": true,
   "projectFilePath": "/Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/bochonok-server-side.csproj",
   "expectedPackageFiles": [
@@ -88,7 +88,15 @@
     "/Users/gandronchyk/.nuget/packages/system.text.encodings.web/7.0.0/system.text.encodings.web.7.0.0.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512",
     "/Users/gandronchyk/.nuget/packages/system.threading.tasks.extensions/4.5.4/system.threading.tasks.extensions.4.5.4.nupkg.sha512",
-    "/Users/gandronchyk/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512"
+    "/Users/gandronchyk/.nuget/packages/system.windows.extensions/6.0.0/system.windows.extensions.6.0.0.nupkg.sha512",
+    "/Users/gandronchyk/.nuget/packages/zxing.net/0.16.9/zxing.net.0.16.9.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file /Users/gandronchyk/RiderProjects/bochonok-server-side/bochonok-server-side/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

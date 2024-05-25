@@ -1,30 +1,28 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using bochonok_server_side.Controllers.BaseController;
 using bochonok_server_side.database;
 using bochonok_server_side.dto.product;
 using bochonok_server_side.model.product_list;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-
-namespace bochonok_server_side.Controllers
+namespace bochonok_server_side.api
 {
   [ApiController]
   [Route("api/[controller]")]
-  public class ProductsController : BaseController.BaseController
+  public class ProductsController : BaseController
   {
     public ProductsController(DataContext context, IMapper mapper)
       :base(context, mapper)
     { }
 
-    // GET: api/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts()
+    public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProducts()
     {
       var products = await _context.ProductList.ToListAsync();
-      return products;
+      return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
 
-    // GET: api/Products/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(string id)
     {
@@ -38,7 +36,6 @@ namespace bochonok_server_side.Controllers
       return Ok(product);
     }
 
-    // GET: api/Products/Category/5
     [HttpGet("Category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<SimplifiedProductDTO>>> GetProductsByCategory(string categoryId)
     {
@@ -46,22 +43,21 @@ namespace bochonok_server_side.Controllers
         .Where(p => p.categoryId == categoryId)
         .ToListAsync();
 
-      return Ok(products);
+      return Ok(_mapper.Map<List<ProductDTO>, List<SimplifiedProductDTO>>(products));
     }
     
     [HttpPost]
-    public async Task<ActionResult<ProductDTO>> AddProduct(ProductTransferObject productBody)
+    public async Task<ActionResult<SimplifiedProductDTO>> AddProduct(ProductRequestDTO body)
     {
-      var productDto = _mapper.Map<ProductTransferObject, ProductDTO>(productBody);
+      var productDto = _mapper.Map<ProductRequestDTO, ProductDTO>(body);
       _context.ProductList.Add(productDto);
       await _context.SaveChangesAsync();
 
-      return Ok();
+      return Ok(_mapper.Map<ProductDTO, SimplifiedProductDTO>(productDto));
     }
 
-    // PUT: api/Products/5/Rating
-    [HttpPut("{id}/Rating")]
-    public async Task<IActionResult> ChangeProductRating(string id, [FromBody] double newRating)
+    [HttpPost("{id}/Rating")]
+    public async Task<ActionResult<ProductDTO>> ChangeProductRating(string id, [FromBody] RatingChangeDTO body)
     {
       var productDto = await _context.ProductList.FindAsync(id);
 
@@ -71,7 +67,7 @@ namespace bochonok_server_side.Controllers
       }
 
       var product = _mapper.Map<ProductDTO, Product>(productDto);
-      product.ChangeRating(newRating);
+      product.ChangeRating(body.rating);
 
       await _context.ProductList.Where(p => p.id == id)
         .ExecuteUpdateAsync(updates =>
@@ -81,7 +77,7 @@ namespace bochonok_server_side.Controllers
         );
       await _context.SaveChangesAsync();
 
-      return NoContent();
+      return Ok(_mapper.Map<Product, RatingDTO>(product));
     }
 
     // PUT: api/Products/5/Price
@@ -97,7 +93,7 @@ namespace bochonok_server_side.Controllers
     //
     //   var product = _mapper.Map<Product>(productNoIdDto);
     //   product.ChangePrice(newPrice);
-    //   var updatedProductDto = _mapper.Map<ProductTransferObject>(product);
+    //   var updatedProductDto = _mapper.Map<ProductRequestDTO>(product);
     //   await _context.SaveChangesAsync();
     //
     //   return NoContent();

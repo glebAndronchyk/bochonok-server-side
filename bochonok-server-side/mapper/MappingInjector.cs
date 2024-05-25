@@ -3,6 +3,7 @@ using bochonok_server_side.dto;
 using bochonok_server_side.dto.category;
 using bochonok_server_side.dto.product;
 using bochonok_server_side.dto.sale;
+using bochonok_server_side.model.encoding;
 using bochonok_server_side.model.product_list;
 using bochonok_server_side.model.sale;
 
@@ -17,10 +18,13 @@ public class MappingInjector
       cfg.CreateMap<ProductDTO, Product>().ReverseMap();
       cfg.CreateMap<DescribedItemDTO, Product>().ReverseMap();
       cfg.CreateMap<SimplifiedProductDTO, Product>().ReverseMap();
+      cfg.CreateMap<SimplifiedProductDTO, ProductDTO>().ReverseMap();
       cfg.CreateMap<Sale, SaleDTO>().ReverseMap();
-      MapWithId(cfg.CreateMap<CategoryTransferObject, CategoryDTO>());
-      MapWithId(cfg.CreateMap<DescribedItemTransferObject, CategoryDTO>());
-      MapWithId(MapForMembers(cfg.CreateMap<ProductTransferObject, ProductDTO>(),
+      cfg.CreateMap<Product, RatingDTO>().ReverseMap();
+      cfg.CreateMap<ProductDTO, RatingDTO>().ReverseMap();
+      MapWithId(cfg.CreateMap<CategoryRequestDTO, CategoryDTO>());
+      MapWithId(cfg.CreateMap<DescribedItemRequestDTO, CategoryDTO>());
+      MapWithId(MapForMembers(cfg.CreateMap<ProductRequestDTO, ProductDTO>(),
         new() { "salePrice", "rating", "totalRating", "totalRated" }, 0));
     });
 
@@ -49,12 +53,10 @@ public class MappingInjector
       return opt.ForMember(
         "id",
         opt => opt.MapFrom(
-          s => Guid.NewGuid().ToString())
+          s => StringEncoder.GenerateRandom(8))
         );
     }
-    else
-    {
-      throw new ArgumentException("TDestination does not have a writable string property named 'id'.");
-    }
+    
+    throw new ArgumentException("TDestination does not have a writable string property named 'id'.");
   }
 }
