@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization;
+using bochonok_server_side.dto.category;
+
 namespace bochonok_server_side.dto.product;
 
 public class ProductDTO : DescribedItemDTO
@@ -10,4 +13,6 @@ public class ProductDTO : DescribedItemDTO
     public double rating { get; set; }
     public double totalRating { get; set; }
     public int totalRated { get; set; }
+    [JsonIgnore]
+    public CategoryDTO category { get; set; }
 }

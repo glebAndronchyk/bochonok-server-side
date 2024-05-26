@@ -13,4 +13,12 @@ public class DataContext: DbContext
     public virtual DbSet<CategoryDTO> Categories { get; set; }
     public virtual DbSet<ProductDTO> ProductList { get; set; }
     public virtual DbSet<SaleDTO> Sales { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProductDTO>()
+            .HasOne(p => p.category)
+            .WithMany(c => c.products)
+            .HasForeignKey(p => p.categoryId);
+    }
 }
